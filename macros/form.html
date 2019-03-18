@@ -1,0 +1,490 @@
+{% macro _offset(offset) %} {% if offset > 0 %} col-sm-offset-{{ offset }} {% endif %} {% endmacro %}
+{% macro _width(width)   %} {% if width  > 0 %} col-sm-{{ width }}         {% endif %} {% endmacro %}
+
+{% macro _required(required) %} {% if required %} required {% endif %} {% endmacro %}
+{% macro _selected(selected) %} {% if selected %} selected {% endif %} {% endmacro %}
+{% macro _checked(checked)   %} {% if checked  %} checked  {% endif %} {% endmacro %}
+{% macro _active(active)     %} {% if active   %} active   {% endif %} {% endmacro %}
+
+{% macro _labeltext(label, required) %}
+
+    {% if label and required %}
+
+        {{ label|safe }}&nbsp;<strong class="text-danger" title="Eingabe erforderlich!">&ast;</strong>
+
+    {% elif label and not required %}
+
+        {{ label|safe }}
+
+    {% endif %}
+
+{% endmacro %}
+
+{% macro _standalone(standalone, open='', close='') %}
+
+    {% if standalone %}
+
+        <div class="form-group">
+        {{- open|safe -}}
+        {{- caller() -}}
+        {{- close|safe -}}
+        </div>
+
+    {% else %}
+
+        {{- caller() -}}
+
+    {% endif %}
+
+{% endmacro %}
+
+{% macro fieldset(legend='') %}
+
+    <fieldset>
+
+        {% if legend -%}
+        <legend>{{ legend }}</legend>
+        {%- endif %}
+
+        {{- caller() -}}
+
+    </fieldset>
+
+{% endmacro %}
+
+{% macro row() %}
+
+    <div class="form-group">
+        {{- caller() -}}
+    </div>
+
+{% endmacro %}
+
+{% macro col(width, offset=0) %}
+
+    <div class="{{ _offset(offset) }} {{ _width(width) }}">
+         {{- caller() -}}
+    </div>
+
+{% endmacro %}
+
+{% macro text(id='', label='', value='', required=False, help='', placeholder='', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+
+        <input type="text"
+               id="{{ id }}"
+               name="{{ id }}"
+               placeholder="{{ placeholder }}"
+               value="{{ value|e }}"
+               class="form-control"
+               {{ _required(required) }}
+               />
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro number(id='', label='', value='', required=False, help='', placeholder='', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+
+        <input type="number"
+               id="{{ id }}"
+               name="{{ id }}"
+               placeholder="{{ placeholder }}"
+               value="{{ value|e }}"
+               class="form-control"
+               {{ _required(required) }}
+               />
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro checkbox(id='', label='', value='', required=False, help='', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <div class="{{ _offset(cols[0]) }} {{ _width(cols[1]) }}">
+
+        <div class="checkbox">
+        <label for="{{ id }}">
+
+            <input type="checkbox"
+                   id="{{ id }}"
+                   name="{{ id }}"
+                   {{ _required(required) }}
+                   {{ _checked(value) }}
+                   />
+
+            {{ _labeltext(label, required) }}
+
+        </label>
+        </div>
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro checkbutton(id='', label='', value='', buttontype='default', required=False, help='', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <div class="{{ _offset(cols[0]) }} {{ _width(cols[1]) }}">
+
+        <div class="btn-group" data-toggle="buttons">
+        <label for="{{ id }}" class="btn btn-{{ buttontype }} {{ _active(value) }}">
+
+            <input type="checkbox"
+                   id="{{ id }}"
+                   name="{{ id }}"
+                   {{ _required(required) }}
+                   {{ _checked(value) }}
+                   />
+
+            {{ _labeltext(label, required) }}
+
+        </label>
+        </div>
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro textarea(id='', label='', value='', required=False, help='', placeholder='', rows=5, cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+
+        <textarea rows="{{ rows }}"
+                  id="{{ id }}"
+                  name="{{ id }}"
+                  placeholder="{{ placeholder }}"
+                  class="form-control"
+                  {{ _required(required) }}
+                  >{{ value|e }}</textarea>
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro selectlist(id='', label='', values=[], selected='', blank='', type='list', required=False, help='', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+
+        <select id="{{ id }}"
+                name="{{ id }}"
+                class="form-control"
+                {{ _required(required) }}
+                >
+
+            {% if not required -%}
+            <option value="{{ blank }}">&mdash;</option>
+            {% endif -%}
+
+            {%- for value in values -%}
+
+                {%- set comment = '(' + value.Comment + ')' if value.Comment else '' -%}
+
+                <option value="{{ value|int }}" {{ _selected(value|int == selected) }}>{{ value|str }} {{ comment }}</option>
+
+            {%- endfor -%}
+
+        </select>
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro selectbuttons(id='', label='', values=[], selected='', blank='', buttontype='default', required=False, help='', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+    <div class="btn-group" data-toggle="buttons">
+
+        {% if not required -%}
+        <label class="btn btn-{{ buttontype }} {{ _active(not selected) }}">
+        <input type="radio"
+               id="{{ id }}"
+               name="{{ id }}"
+               value="{{ blank }}"
+               {{ _checked(not selected) }}
+               >&mdash;
+        </label>
+        {% endif -%}
+
+        {%- for value in values -%}
+
+            {%- set comment = '(' + value.Comment + ')' if value.Comment else '' -%}
+
+            <label class="btn btn-{{ buttontype }} {{ _active(value|int == selected) }}">
+            <input type="radio"
+                   id="{{ id }}_{{ value|int }}"
+                   name="{{ id }}"
+                   value="{{ value|int }}"
+                   {{ _required(required) }}
+                   {{ _checked(value|int == selected) }}
+                   >{{ value|str }} {{ comment }}
+            </label>
+
+        {%- endfor -%}
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+    </label>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro date(id='', label='', value='', placeholder='TT.MM.JJJJ', format='dd.mm.yy', required=False, help='', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+
+        <input type="text"
+               id="{{ id }}"
+               name="{{ id }}"
+               placeholder="{{ placeholder }}"
+               value="{{ value|e }}"
+               class="form-control"
+               {{ _required(required) }}
+               />
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+    <script>
+    $(function()
+	{
+        $('#{{ id }}')
+        .datepicker(
+        {
+            dateFormat: '{{ format }}',
+            firstDay: 1,
+            showMonthAfterYear: false,
+            monthNames: ['Januar','Februar','März','April','Mai','Juni', 'Juli','August','September','Oktober','November','Dezember'],
+            monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun', 'Jul','Aug','Sep','Okt','Nov','Dez'],
+            dayNames: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
+            dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+            dayNamesMin: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+        });
+    });
+    </script>
+
+{% endmacro %}
+
+{% macro time(id='', label='', value='', required=False, help='', placeholder='HH:MM', cols=[2,10], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+
+        <input type="text"
+               id="{{ id }}"
+               name="{{ id }}"
+               placeholder="{{ placeholder }}"
+               value="{{ value|e }}"
+               class="form-control"
+               {{ _required(required) }}
+               />
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro autocomplete(id='', label='', url='', text='', value='', required=False, help='', cols=[2,10], standalone=True,
+                      placeholder='mind. drei Zeichen eingeben...') %}
+
+    {%- set id_value  = id -%}
+    {%- set id_text  = id + '_text' -%}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id_text }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+
+        <input type="text"
+               id="{{ id_text }}"
+               name="{{ id_text }}"
+               placeholder="{{ placeholder }}"
+               value="{{ text|e }}"
+               class="form-control"
+               {{ _required(required) }}
+               />
+
+        <input type="hidden"
+               id="{{ id_value }}"
+               name="{{ id_value }}"
+               value="{{ value|e }}"/>
+
+        {% if help %}
+        <span class="help-block">{{ help|safe }}</span>
+        {% endif %}
+
+    </div>
+
+    {% endcall %}
+
+    <script>
+    $(function()
+	{
+        $('#{{ id_text }}')
+        .autocomplete(
+        {
+            minLength: 3,
+            source: function(request, response)
+            {
+                $.ajax(
+                {
+                    url:      '{{ url }}',
+                    type:     'POST',
+                    data:     { term: request.term },
+                    dataType: 'json',
+                    success:  function(data)
+                    {
+                        return response(data);
+                    }
+                });
+            },
+            select: function( event, ui )
+            {
+                $('#{{ id_text }}').val(ui.item.label);
+                $('#{{ id_value }}').val(ui.item.value);
+
+                return false;
+            },
+            change: function( event, ui )
+            {
+                if (ui == null || ui.item == null)
+                {
+                    $('#{{ id_text }}').val(null);
+                    $('#{{ id_value }}').val(null);
+                }
+
+                return true;
+            }
+        })
+        .dblclick(function()
+        {
+            var term = $(this).val();
+
+            if (!term) term = '   ';
+
+            $(this).autocomplete('search', term);
+        })
+    });
+    </script>
+
+{% endmacro %}
+
+{% macro submit(value='', standalone=True) %}
+
+    {% call _standalone(standalone, '<div class="col-sm-12">', '</div>') %}
+
+     <button type="submit" class="btn btn-primary">{{ value }}</button>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro delete(url, value='', standalone=True) %}
+
+    {% call _standalone(standalone, '<div class="col-sm-12">', '</div>') %}
+
+     <a href="{{ url }}" class="btn btn-danger">{{ value }}</a>
+
+    {% endcall %}
+
+{% endmacro %}
+
+{% macro showdialog(id, value='', label='', tooltip='', tag='', buttontype='default', cols=[0,12], standalone=True) %}
+
+    {% call _standalone(standalone) %}
+
+    <label for="{{ id }}" class="{{ _width(cols[0]) }} control-label">{{ _labeltext(label, required=False) }}</label>
+
+    <div class="{{ _width(cols[1]) }}">
+         <button type="button" class="btn btn-{{ buttontype }}" data-toggle="modal" data-target="#{{ id }}" data-tag="{{ tag }}" title="{{ tooltip }}">
+             {{ value }}
+         </button>
+    </div>
+
+    {% endcall %}
+
+{% endmacro %}

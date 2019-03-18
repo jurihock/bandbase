@@ -1,0 +1,117 @@
+{% macro link(url, value='', type='primary', help='', class='', active=False, target='') -%}
+
+    {%- set help = 'title="%s"'|format(help) if help else '' -%}
+    {%- set class = 'active ' + class if active else class -%}
+    {%- set target = 'target="%s"'|format(target) if target else '' -%}
+
+    <a href="{{ url }}" class="btn btn-{{ type }} {{ class }}" {{ help|safe }} {{ target|safe }}>
+        {%- if caller %} {{ caller() }} {% else %} {{ value|safe }} {% endif -%}
+    </a>
+
+{%- endmacro %}
+
+{% macro script(onclick, value='', type='primary', help='', class='', enabled=True) -%}
+
+    {%- set onclick = onclick + '; return false;' if onclick else 'return false;' -%}
+    {%- set help = 'title="%s"'|format(help) if help else '' -%}
+    {%- set class = 'disabled ' + class if not enabled else class -%}
+
+    <a href="#" onclick="{{ onclick|safe }}" class="btn btn-{{ type }} {{ class }}" {{ help|safe }}>
+        {%- if caller %} {{ caller() }} {% else %} {{ value|safe }} {% endif -%}
+    </a>
+
+{%- endmacro %}
+
+{% macro toggle(id, value='', type='primary', help='', class='', active=False) -%}
+
+    {%- set help = 'title="%s"'|format(help) if help else '' -%}
+    {%- set class = 'active ' + class if active else class -%}
+
+    <a href="#{{ id }}" class="btn btn-{{ type }} {{ class }}" data-toggle="collapse" {{ help|safe }}>
+        {%- if caller %} {{ caller() }} {% else %} {{ value|safe }} {% endif -%}
+    </a>
+
+{%- endmacro %}
+
+{% macro group(class='') -%}
+
+    <div class="btn-group {{ class }}">
+        {{- caller() -}}
+    </div>
+
+{%- endmacro %}
+
+{% macro menu(url, value, type='primary', help='', class='') -%}
+
+    {%- set help = 'title="%s"'|format(help) if help else '' -%}
+    {%- set dropdown = 'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' -%}
+
+    <div class="btn-group">
+
+        {% if url %}
+
+            <a href="{{ url }}" class="btn btn-{{ type }} {{ class }}" {{ help|safe }}>
+                {{ value|safe }}
+            </a>
+
+            <a class="btn btn-{{ type }} {{ class }} dropdown-toggle dropdown-toggle-split" {{ dropdown|safe }}>
+                <span class="sr-only"></span>
+            </a>
+
+        {% else %}
+
+            <button type="button" class="btn btn-{{ type }} {{ class }} dropdown-toggle" {{ help|safe }} {{ dropdown|safe }}>
+                {{ value|safe }}
+            </button>
+
+        {% endif %}
+
+        <div class="dropdown-menu">
+            {{- caller() -}}
+        </div>
+
+    </div>
+
+{%- endmacro %}
+
+{% macro menulink(url, value, class='') -%}
+
+    <a href="{{ url }}" class="dropdown-item {{ class }}">{{ value|safe }}</a>
+
+{%- endmacro %}
+
+{% macro menutoggle(id, value, class='') -%}
+
+    <a href="#{{ id }}" class="dropdown-item {{ class }}" data-toggle="collapse">{{ value|safe }}</a>
+
+{%- endmacro %}
+
+{% macro menusep(class='') -%}
+
+    <div class="dropdown-divider {{ class }}"></div>
+
+{%- endmacro %}
+
+{% macro post(url, value, type='primary', class='', innerclass='') -%}
+
+    <form action="{{ url }}" method="post" class="form-inline {{ class }}">
+
+        {%- if caller %} {{ caller() }} {% endif -%}
+
+        <button class="btn btn-{{ type }} {{ innerclass }}" type="submit">{{ value|safe }}</button>
+
+    </form>
+
+{%- endmacro %}
+
+{% macro proscht(url, value, type='primary', class='', style='display:inline-block') -%}
+
+    <form action="{{ url }}" method="post" class="form-inline {{ class }}" style="{{ style }}">
+
+        {%- if caller %} {{ caller() }} {% endif -%}
+
+        <button class="btn btn-{{ type }}" type="submit">{{ value|safe }}</button>
+
+    </form>
+
+{%- endmacro %}

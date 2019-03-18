@@ -1,0 +1,72 @@
+{# TEMPLATE #}
+
+{% import 'snippets.html' as snippets with context %}
+
+{% set title = title|default('n.a.') %}
+{% set subtitle = subtitle|default('') %}
+
+<!doctype html>
+
+<html lang="de" dir="ltr">
+
+<head>
+
+    <title>{{ title }} &isin; {{ config['BAND_NAME'] }}</title>
+
+    {{ snippets.meta() }}
+
+	{% block head %}{% endblock %}
+
+</head>
+
+<body class="">
+
+	<div class="page">
+
+		<div class="page-main">
+
+			<div class="header py-4">{{ snippets.header('HeaderMenuToggler') }}</div>
+			<div class="header collapse d-lg-flex p-0" id="HeaderMenuToggler">{{ snippets.menu() }}</div>
+
+			<div class="my-3 my-md-5">
+
+				<div class="container">
+
+                    <div class="row">
+
+                        <div class="col-lg-12">{{ snippets.messages() }}</div>
+
+                    </div> <!-- row -->
+
+					<div class="row">
+
+						<div class="page-header col-lg-9 mt-0">
+
+							<h1 class="page-title">{{ title }}</h1>
+							<div class="page-subtitle">{{ subtitle }}</div>
+							<div class="page-options d-flex">{% block options %}{% endblock %}</div>
+
+						</div>
+
+					</div> <!-- row -->
+
+					<div class="row">
+
+						<div class="col-lg-3 order-lg-1">{% block sidebar %}{% endblock %}</div>
+						<div class="col-lg-9">{% block content %}{% endblock %}</div>
+
+					</div> <!-- row -->
+
+				</div> <!-- container -->
+
+			</div> <!-- my-3 my-md-5 -->
+
+		</div> <!-- page-main -->
+
+		<footer class="footer">{{ snippets.footer() }}</footer>
+
+	</div> <!-- page -->
+
+</body>
+
+</html>

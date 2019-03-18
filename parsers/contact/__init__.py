@@ -1,0 +1,2 @@
+from parsers.contact.ContactFormRequestParser import ContactFormRequestParser
+from parsers.contact.ContactQueryRequestParser import ContactQueryRequestParser

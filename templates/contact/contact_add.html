@@ -1,0 +1,27 @@
+{% import "form.html" as form %}
+
+{% extends 'basic.html' %}
+
+{% set title = 'Neuer Kontakt anlegen' %}
+
+{% block content %}
+
+{% from 'dialog_contact_geopoint.html' import dialog_contact_geopoint %}
+{{ dialog_contact_geopoint('geopoint') }}
+{% set geopoint_dialog_available = True %}
+
+<form action="{{ url_for('contact_add') }}" method="POST" class="form-horizontal">
+
+	<div class="panel panel-default">
+	<div class="panel-body">
+
+		{% include "contact_form.html" %}
+
+	</div>
+	</div>
+
+	{{ form.submit('Fertigstellen') }}
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'extended.html' %}
+
+{% set title = 'Über die Bandbase' %}
+
+{% block options %}
+
+    <div class="btn-group">
+        <a href="#" class="btn btn-secondary">Backup anlegen</a>
+        <a href="#" class="btn btn-secondary">Logs zeigen</a>
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+
+    <div class="list-group list-group-transparent">
+        <a href="#" class="list-group-item list-group-item-action" data-tab="0">A</a>
+        <a href="#" class="list-group-item list-group-item-action" data-tab="1">B</a>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="card" data-tab="0">
+
+        <div class="card-header">
+            <h3 class="card-title">Card A</h3>
+        </div>
+        <div class="card-body">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. A consequuntur, deserunt eaque error nulla temporibus!
+        </div>
+
+    </div>
+
+    <div class="card" data-tab="1">
+
+        <div class="card-header">
+            <h3 class="card-title">Card B</h3>
+        </div>
+        <div class="card-body">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. A consequuntur, deserunt eaque error nulla temporibus!
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. A consequuntur, deserunt eaque error nulla temporibus!
+        </div>
+
+    </div>
+
+{% endblock %}

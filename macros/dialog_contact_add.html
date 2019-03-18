@@ -1,0 +1,96 @@
+{% macro dialog_contact_add(id, title='Neuer Kontakt anlegen') %}
+
+<input type="hidden" id="{{ id }}_tag"/>
+
+<div class="modal fade" id="{{ id }}" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Abbrechen"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ title }}</h4>
+    </div>
+
+    <div class="modal-body">
+        <form class="form-horizontal" id="{{ id }}_form"></form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="contactsubmit(); return false;">Fertigstellen</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Abbrechen</button>
+    </div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+var url = '{{ url_for('contact_add', format='dialog') }}';
+
+function contactsubmit()
+{
+    var tag = $('#{{ id }}_tag').val();
+    var form = $('#{{ id }}_form');
+
+    var incomplete = form.find(':input[required]')
+                         .is(function(index, element){return !element.value;});
+
+    if (incomplete)
+        return;
+
+    $.ajax(
+    {
+        url:      url,
+        type:     'POST',
+        data:     form.serialize(),
+        dataType: 'json',
+        success:  function(data)
+        {
+            if (data.error)
+            {
+                alert(data.error);
+                return;
+            }
+
+            $('#' + tag).val(data.id);
+            $('#' + tag + '_text').val(data.name);
+
+            $('#{{ id }}').modal('hide');
+        }
+    });
+}
+
+function contactsetup(tag)
+{
+    $('#{{ id }}_tag').val(tag);
+    $('#{{ id }}_form').load(url);
+}
+
+function contactcleanup()
+{
+    $('#{{ id }}_tag').val('');
+    $('#{{ id }}_form').empty();
+}
+
+$(function()
+{
+    $('#{{ id }}').on('show.bs.modal', function(event)
+    {
+        var button = $(event.relatedTarget);
+        var tag = button.data('tag');
+
+        if (!tag) alert('Where is the tag!?');
+
+        contactsetup(tag);
+    });
+
+    $('#{{ id }}').on('hide.bs.modal', function(event)
+    {
+        contactcleanup();
+    });
+});
+
+</script>
+
+{% endmacro %}

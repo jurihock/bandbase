@@ -1,0 +1,310 @@
+{% import 'icons.html' as icons %}
+
+{% macro static(id, cols='', sort='', class='') %}
+
+    <table id="{{ id }}" class="table table-hover table-responsive table-sm {{ class }}" data-sortlist="{{ sort }}">
+
+        {% if cols -%}
+
+            {%- set colsum = cols|sum -%}
+
+            {% if colsum != 12 -%}
+            <div class="alert alert-danger">Expected total column width of 12, but found only {{ colsum }}!</div>
+            {%- endif %}
+
+            <colgroup>
+
+                {% for col in cols %}
+                <col width="{{ 100*col/colsum }}%"/>
+                {% endfor %}
+
+            </colgroup>
+
+        {%- endif %}
+
+        {{- caller() -}}
+
+    </table>
+
+	<script>
+	$(function()
+	{
+		$('#{{ id }}')
+		.tablesorter
+		({
+			delayInit: false,
+			emptyTo: 'zero',
+			ignoreCase: true,
+			sortInitialOrder: 'asc', // asc, desc
+			sortReset: false
+		});
+	});
+	</script>
+
+{% endmacro %}
+
+{% macro dynamic(id, url, cols='', sort='', size=10, class='') %}
+
+    <table id="{{ id }}" class="table table-hover table-responsive table-sm mb-0 {{ class }}" data-sortlist="{{ sort }}">
+
+        {% if cols -%}
+
+            {%- set colsum = cols|sum -%}
+
+            {% if colsum != 12 -%}
+            <div class="alert alert-danger">Expected total column width of 12, but found only {{ colsum }}!</div>
+            {%- endif %}
+
+            <colgroup>
+
+                {% for col in cols %}
+                <col width="{{ 100*col/colsum }}%"/>
+                {% endfor %}
+
+            </colgroup>
+
+        {%- endif %}
+
+        {{- caller() -}}
+
+        <tfoot>
+
+            <tr>
+
+                <td class="tablesorter-pager" colspan="{{ cols|length }}">
+
+                    <nav class="float-left">
+
+                        <ul class="pagination pagination-sm mt-3 mb-0">
+
+                            <li class="page-item">
+                                <span class="page-link pagedisplay" style="cursor:default"
+                                      title="Datensatzauswahl" data-toggle="tooltip" data-placement="top"></span>
+                            </li>
+
+                        </ul>
+
+                    </nav>
+
+                    <nav class="float-right">
+
+                        <ul class="pagination pagination-sm mt-3 mb-0">
+
+                            <li class="page-item first">
+                                <button class="page-link" type="button"
+                                        title="Erste Seite" data-toggle="tooltip" data-placement="top">
+                                    {{ icons.icon('chevrons-left', margin=0) }}
+                                </button>
+                            </li>
+
+                            <li class="page-item prev">
+                                <button class="page-link" type="button"
+                                        title="Vorherige Seite" data-toggle="tooltip" data-placement="top">
+                                    {{ icons.icon('chevron-left', margin=0) }}
+                                </button>
+                            </li>
+
+                            <li class="page-item">
+                                <input id="pagesize" class="page-link pagesize text-center" type="number" min="1" style="width:5em;cursor:text"
+                                       title="Max. pro Seite" data-toggle="tooltip" data-placement="top"
+                                       onclick="$('#pagesize').focus().select();"/>
+                            </li>
+
+                            <li class="page-item next">
+                                <button class="page-link" type="button"
+                                        title="Nächste Seite" data-toggle="tooltip" data-placement="top">
+                                    {{ icons.icon('chevron-right', margin=0) }}
+                                </button>
+                            </li>
+
+                            <li class="page-item last">
+                                <button class="page-link" type="button"
+                                        title="Letzte Seite" data-toggle="tooltip" data-placement="top">
+                                    {{ icons.icon('chevrons-right', margin=0) }}
+                                </button>
+                            </li>
+
+                        </ul>
+
+                    </nav>
+
+                </td>
+
+            </tr>
+
+        </tfoot>
+
+    </table>
+
+	<script>
+    require(['jquery', 'tablesorter-mottie', 'tablesorter-mottie-pager', 'tablesorter-mottie-widgets', 'prototypes'], function()
+    {
+        $(function()
+        {
+            var placeholder = '<p id="placeholder" class="text-muted">Die Tabelle wird geladen...</p>';
+
+            $(placeholder).insertAfter('#{{ id }}');
+
+            $('#{{ id }}')
+            .hide()
+            .bind('pagerInitialized', function(event, options)
+            {
+                $('#{{ id }}').show('fast');
+                $('#placeholder').hide();
+            })
+            .bind('pagerComplete', function(event, options)
+            {
+                $('#{{ id }} [data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+            })
+            .tablesorter
+            ({
+                delayInit: false,
+                emptyTo: 'zero',
+                ignoreCase: true,
+                sortInitialOrder: 'asc', // asc, desc
+                sortReset: false,
+                widgets: [ 'filter' ],
+                widgetOptions:
+                {
+                    filter_cssFilter: 'form-control form-control-sm',
+                },
+            })
+            .tablesorterPager
+            ({
+                page: 0,
+                size: {{ size }},
+                savePages: false,
+                container: $('.tablesorter-pager'),
+                output: '&nbsp;{startRow}&ndash;{endRow} von {totalRows}&nbsp;',
+                ajaxUrl: '{{ url }}&page={page}&size={size}&{filterList:filter}&{sortList:sort}',
+                customAjaxUrl: function(table, url)
+                {
+                    var sort_variables_count = 0;
+
+                    url = url.replace(/sort\[\d{1}\]=\d{1}/g, function(value)
+                    {
+                        sort_variables_count++;
+
+                        sort_order = value[value.length - 1];
+
+                        if (sort_order == 1)
+                        {
+                            value = value.slice(0, -1) + 'desc';
+                        }
+                        else
+                        {
+                            value = value.slice(0, -1) + 'asc';
+                        }
+
+                        return value;
+                    });
+
+                    if (table.id == 'contacts')
+                    {
+                        url = url.replace(/\[0\]=/g, '_by_name=');
+                        url = url.replace(/\[1\]=/g, '_by_category=');
+                        url = url.replace(/\[2\]=/g, '_by_comment=');
+                    }
+                    else if (table.id == 'scores')
+                    {
+                        url = url.replace(/\[0\]=/g, '_by_name=');
+                        url = url.replace(/\[1\]=/g, '_by_letter=');
+                        url = url.replace(/\[2\]=/g, '_by_number=');
+                        url = url.replace(/\[3\]=/g, '_by_edition=');
+                        url = url.replace(/\[4\]=/g, '_by_gsm=');
+                        url = url.replace(/\[5\]=/g, '_by_comment=');
+                    }
+                    else if (table.id == 'gigs')
+                    {
+                        url = url.replace(/\[0\]=/g, '_by_name=');
+                        url = url.replace(/\[1\]=/g, '_by_date=');
+                        url = url.replace(/\[2\]=/g, '_by_location=');
+                        url = url.replace(/\[3\]=/g, '_by_comment=');
+                    }
+                    else
+                    {
+                        alert('Unexpected table ID {0}! '.format(table.id) +
+                              'Please revise the TableSorter macro.');
+                    }
+
+                    if (sort_variables_count > 0)
+                    {
+                        var i = 0;
+
+                        // TODO: How to match all occurrences else?
+                        url.replace(/sort_by_[^=]+/g, function(value)
+                        {
+                            // "sort_by_" => 8
+                            var sort_variable = value.slice(8);
+
+                            url += '&order_of_' + sort_variable + '=' + i;
+
+                            i++;
+
+                            return value;
+                        });
+                    }
+
+                    return url;
+                },
+                ajaxProcessing: function(data)
+                {
+                    if (!data) return null;
+
+                    total_rows = data.total_rows;
+
+                    rows = data.hasOwnProperty('rows') ? data.rows : [];
+                    headers = data.hasOwnProperty('headers') ? data.headers : [];
+
+                    var link_meta =
+                    {
+                        'update': { 'text': '{{ icons.icon('edit-2', margin=0) }}',  title: 'Bearbeiten...' },
+                        'delete': { 'text': '{{ icons.icon('trash-2', margin=0) }}', title: 'Löschen...' },
+                    };
+
+                    for (var i = 0; i < rows.length; i++)
+                    {
+                        var links = rows[i][rows[i].length-1];
+
+                        var html = '';
+
+                        html += '<div class="btn-group">';
+
+                        for (var j = 0; j < links.length; j++)
+                        {
+                            var link = links[j];
+
+                            if (!link) continue;
+
+                            var meta = link_meta[link[0]];
+                            var href = link[1];
+
+                            var attr =
+                            [
+                                'href="{0}"'.format(href),
+                                'title="{0}"'.format(meta.title),
+                                'data-toggle="tooltip" data-placement="{0}"'.format(j < 1 ? 'left' : 'right')
+                            ];
+
+                            html += '<a {0} class="btn btn-primary btn-sm">{1}</a>'.format(attr.join(' '), meta.text);
+                        }
+
+                        html += '</div>';
+
+                        rows[i][rows[i].length-1] = html;
+                    }
+
+                    // WTF: Workaround to clear cached table entries if the actual result is empty
+                    if (total_rows < 1)
+                    {
+                        $.tablesorter.clearTableBody($('#{{ id }}'));
+                    }
+
+                    return [ total_rows, rows, headers ];
+                }
+            });
+        });
+    });
+	</script>
+
+{% endmacro %}

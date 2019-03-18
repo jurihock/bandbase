@@ -1,0 +1,77 @@
+/* Excerpt from jQuery TableSorter default stylesheet */
+
+.tablesorter-default .header,
+.tablesorter-default .tablesorter-header
+{
+    background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+    background-position: center right;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.tablesorter-default thead .headerSortUp,
+.tablesorter-default thead .tablesorter-headerSortUp,
+.tablesorter-default thead .tablesorter-headerAsc
+{
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+}
+.tablesorter-default thead .headerSortDown,
+.tablesorter-default thead .tablesorter-headerSortDown,
+.tablesorter-default thead .tablesorter-headerDesc
+{
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+}
+.tablesorter-default thead .sorter-false
+{
+    background-image: none;
+    cursor: default;
+}
+
+.tablesorter-default tfoot .pagesize::-webkit-inner-spin-button,
+.tablesorter-default tfoot .pagesize::-webkit-outer-spin-button
+{
+    /* hide up-down arrows on numeric input */
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Custom stuff */
+
+.tablesorter-default thead tr.tablesorter-filter-row input.disabled,
+.tablesorter-default tbody tr.filtered
+{
+    display: none;
+}
+
+.tablesorter-default thead tr.tablesorter-filter-row input.tablesorter-filter
+{
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+/*
+
+.tablesorter-default thead tr.tablesorter-headerRow th
+{
+    border-bottom: 0px;
+}
+
+.tablesorter-default thead tr.tablesorter-filter-row
+{
+    background-color: #e9ecef;
+}
+
+.tablesorter-default thead tr.tablesorter-filter-row td
+{
+    border-bottom: 2px solid #dee2e6;
+}
+
+.tablesorter-default tfoot tr
+{
+    background-color: #e9ecef;
+}
+
+*/

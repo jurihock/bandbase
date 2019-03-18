@@ -1,0 +1,13 @@
+Nachname;Vorname;Instrument;E-Mail;Mobiltelefon;Festnetztelefon;Wohnadresse;Postleitzahl;Wohnort;Geburtsdatum
+{% for person in persons %}
+{{- person.LastName|str }};
+{{- person.FirstName|str }};
+{{- person.Comment|str }};
+{{- person.EMail|str }};
+{{- person.MobilePhone|str }};
+{{- person.LandlinePhone|str }};
+{{- person.Street|str ~ ' ' ~ person.HouseNumber|str }};
+{{- person.PostalCode|str }};
+{{- person.City|str }};
+{{- person.BirthDate|date }}
+{% endfor %}

@@ -1,0 +1,5 @@
+from parsers.score.ScoreFolderItemFormRequestParser import ScoreFolderItemFormRequestParser
+from parsers.score.ScoreFormRequestParser import ScoreFormRequestParser
+from parsers.score.ScoreLineupFormRequestParser import ScoreLineupFormRequestParser
+from parsers.score.ScorePersonsFormRequestParser import ScorePersonsFormRequestParser
+from parsers.score.ScoreQueryRequestParser import ScoreQueryRequestParser

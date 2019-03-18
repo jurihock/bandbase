@@ -1,0 +1,46 @@
+{% import "button.html" as button %}
+{% import "form.html" as form %}
+
+{% extends 'basic.html' %}
+
+{% set title = 'Kontakt bearbeiten' %}
+
+{% block content %}
+
+{% from 'dialog_contact_geopoint.html' import dialog_contact_geopoint %}
+{{ dialog_contact_geopoint('geopoint') }}
+{% set geopoint_dialog_available = True %}
+
+{% call button.panel() %}
+{% call button.group() %}
+
+	{{ button.link(url_for('contact_vcard', id=contact|int), value='Visitenkarte herunterladen') }}
+
+{% endcall %}
+{% endcall %}
+
+<form action="{{ url_for('contact_update', id=contact|int) }}" method="POST" class="form-horizontal">
+
+	<div class="panel panel-default">
+	<div class="panel-body">
+
+		{% include "contact_form.html" %}
+
+	</div>
+	</div>
+
+	{% call form.row() %}
+	{% call form.col(12) %}
+
+		{{ form.submit('Fertigstellen', standalone=False) }}
+
+		{% if not contact.IsPersistent %}
+		{{ form.delete(url_for('contact_delete', id=contact|int), 'Löschen...', standalone=False) }}
+		{% endif %}
+
+	{% endcall %}
+	{% endcall %}
+
+</form>
+
+{% endblock %}

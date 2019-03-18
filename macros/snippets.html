@@ -1,0 +1,221 @@
+{% import 'icons.html' as icons %}
+
+{% macro meta() %}
+
+    <meta charset="utf-8">
+
+    <!--
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    -->
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!-- fonts -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
+
+    <!-- require.js -->
+
+    <script src="{{ url_for('static', filename='js/require.min.js') }}"></script>
+    <script>requirejs.config({ baseUrl: '/' });</script>
+
+    <!-- tabler dashboard core (without the provided tablesorter plugin) -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+    <!-- custom plugins -->
+
+    <script src="{{ url_for('static', filename='plugins/prototypes/plugin.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/tablesorter-mottie/plugin.css') }}">
+    <script src="{{ url_for('static', filename='plugins/tablesorter-mottie/plugin.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='plugins/tabs/plugin.js') }}"></script>
+
+    <!-- just slightly increase the default font size -->
+
+    <style> html { font-size: 1rem; } </style>
+
+    <style>
+
+    .no-border-left-radius
+    {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .no-border-right-radius
+    {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    </style>
+
+{% endmacro %}
+
+{% macro header(menu) %}
+
+    <div class="container">
+
+        <div class="d-flex">
+
+            <a class="header-brand" href="{{ url_for('index') }}">
+                <!-- <img src="logo.svg" class="header-brand-img" alt="Band Base"> -->
+                {{ config['BAND_NAME'] }}
+            </a>
+
+            <div class="d-flex order-lg-2 ml-auto">
+                <div class="nav-item d-none d-md-flex">
+                    <div class="btn-list">
+
+                        {% if config['BAND_WWW'] %}
+
+                            <a href="{{ config['BAND_WWW'] }}" class="btn btn-sm btn-outline-primary"
+                               title="Zur Webseite &bdquo;{{ config['BAND_WWW']|hostname }}&ldquo; gehen?"
+                               data-toggle="tooltip" data-placement="bottom">
+                                {{ icons.icon('globe') }} {{ config['BAND_ABBR'] }} Webseite
+                            </a>
+
+                        {% endif %}
+
+                        {% if config['LOGIN'] %}
+
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-primary"
+                               title="Hier angemeldet seit {{ session['ok']|isodate|utcdaydelta }}, jetzt abmelden?"
+                               data-toggle="tooltip" data-placement="bottom">
+                                {{ icons.icon('lock') }} Abmelden
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+            <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#{{ menu }}">
+                <span class="header-toggler-icon"></span>
+            </a>
+
+        </div> <!-- d-flex -->
+
+    </div> <!-- container -->
+
+{% endmacro %}
+
+{% macro menu() %}
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                    <li class="nav-item">
+                        {% set active = 'active' if request.path == '/' else '' %}
+                        <a href="{{ url_for('index') }}" class="nav-link {{ active }}">
+                            {{ icons.icon('home') }} {{ config['BAND_ABBR'] }} Übersicht
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% set active = 'active' if request.path.startswith('/gig') else '' %}
+                        <a href="#" class="nav-link {{ active }}">
+                            {{ icons.icon('briefcase') }} Gigs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% set active = 'active' if request.path.startswith('/contact') else '' %}
+                        <a href="{{ url_for('contact_query') }}" class="nav-link {{ active }}">
+                            {{ icons.icon('user') }} Kontakte
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% set active = 'active' if request.path.startswith('/score') and not request.path.startswith('/score/folder') else '' %}
+                        <a href="#" class="nav-link {{ active }}">
+                            {{ icons.icon('music') }} Notenlager
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% set active = 'active' if request.path.startswith('/score/folder') else '' %}
+                        <a href="#" class="nav-link {{ active }}">
+                            {{ icons.icon('book-open') }} Notenmappen
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% set active = 'active' if request.path.startswith('/stats') else '' %}
+                        <a href="#" class="nav-link {{ active }}">
+                            {{ icons.icon('trending-up') }} Statistik
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endmacro %}
+
+{% macro footer() %}
+
+    <div class="container">
+
+        <div class="row align-items-center flex-row-reverse">
+
+            <div class="col-auto ml-lg-auto">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <ul class="list-inline list-inline-dots mb-0">
+                            <li class="list-inline-item">Über die <a href="{{ url_for('about') }}">Band Base</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+                &copy; 2015&ndash;{{ utcnow.year }} by <a href="https://github.com/jurihock">github.com/jurihock</a>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endmacro %}
+
+{% macro messages() %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+        <div class="alerts">
+
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible">
+
+                <button type="button" class="close" data-dismiss="alert"></button>
+
+                {% if category == 'success' %}
+                    {{ icons.icon('thumbs-up') }}
+                {% elif category == 'warning' %}
+                    {{ icons.icon('alert-triangle') }}
+                {% elif category == 'danger' %}
+                    {{ icons.icon('alert-triangle') }}
+                {% else %}
+                    {{ icons.icon('bell') }}
+                {% endif %}
+
+                {{ message|replace('<a', '<a class="alert-link"')|safe }}
+
+            </div>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+
+    {% endwith %}
+
+{% endmacro %}

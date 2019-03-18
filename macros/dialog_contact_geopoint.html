@@ -1,0 +1,198 @@
+{% macro dialog_contact_geopoint(id, title='Karte') %}
+
+{%- set pam  = id + '_pam' -%}
+{%- set map  = id + '_map' -%}
+
+<div class="modal fade" id="{{ id }}" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Abbrechen"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ title }}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div id="{{ pam }}"></div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="geosearch_extra(); return false;">Anschrift suchen extra</button>
+        <button type="button" class="btn btn-default" onclick="geosearch(); return false;">Anschrift suchen</button>
+        <button type="button" class="btn btn-primary" onclick="geosubmit(); return false;">Fertigstellen</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Abbrechen</button>
+
+    </div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+var httpx = window.location.protocol + '//';
+
+var map;
+var marker;
+
+function nominatim(format, limit)
+{
+    var street     = $('#street').val();
+        street     = street
+                     ? street + ' ' + $('#house_number').val()
+                     : street;
+    var postalcode = $('#postal_code').val();
+    var city       = $('#city').val();
+    var country    = $('#country').val();
+
+    street     = street.trim();
+    postalcode = postalcode.trim();
+    city       = city.trim();
+    country    = country.trim();
+
+    var url = httpx + 'nominatim.openstreetmap.org/search';
+
+    if (format) url += '?format=' + format;
+    if (limit)  url += '&limit=' + limit;
+
+    if (street)     url += '&street=' + street;
+    if (postalcode) url += '&postalcode=' + postalcode;
+    if (city)       url += '&city=' + city;
+    if (country)    url += '&country=' + country;
+
+    return url;
+}
+
+function geosearch()
+{
+    var url = nominatim('json', 1);
+
+    var request = $.ajax({ url: url, jsonp: 'json_callback', dataType: 'jsonp' });
+
+    request.done(function(items)
+    {
+        if (!items)
+            return;
+
+        if (items.length < 1)
+            return;
+
+        var item = items[0];
+
+        var lat = item.lat.replace(',', '.').trim();
+        var lng = item.lon.replace(',', '.').trim();
+
+        var latlng = L.latLng(lat, lng);
+
+        if (marker == null)
+            marker = L.marker(latlng).addTo(map);
+
+        marker.setLatLng(latlng).update();
+
+        map.setView(latlng, 18);
+    });
+}
+
+function geosearch_extra()
+{
+    var url = nominatim('html');
+
+    window.open(url);
+
+    $('#{{ id }}').modal('hide');
+}
+
+function geosubmit()
+{
+    if (marker != null)
+    {
+        var latlng = marker.getLatLng();
+
+        var lat = latlng.lat.toString().replace('.', ',').trim();
+        var lng = latlng.lng.toString().replace('.', ',').trim();
+
+        $('#latitude').val(lat);
+        $('#longitude').val(lng);
+    }
+
+    $('#{{ id }}').modal('hide');
+}
+
+function geosetup()
+{
+    map = L.map('{{ map }}');
+
+    var lat = $('#latitude').val().replace(',', '.').trim();
+    var lng = $('#longitude').val().replace(',', '.').trim();
+
+    if (lat && lng)
+    {
+        var latlng = L.latLng(lat, lng);
+
+        if (marker == null)
+            marker = L.marker(latlng).addTo(map);
+
+        marker.setLatLng(latlng).update();
+
+        map.setView(latlng, 18);
+    }
+    else
+    {
+        // show Pforzheim by default
+
+        var latlng = L.latLng(48.89, 8.70);
+
+        map.setView(latlng, 12);
+    }
+
+    var layer = L.tileLayer(httpx + '{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a> | <a href="http://nominatim.openstreetmap.org">Nominatim</a>'
+    });
+
+    layer.addTo(map);
+
+    map.on('click', function(e)
+    {
+        var latlng = e.latlng;
+
+        if (marker == null)
+            marker = L.marker(latlng).addTo(map);
+
+        marker.setLatLng(latlng).update();
+    });
+}
+
+function geocleanup()
+{
+    $('#{{ pam }}').empty();
+
+    map = null;
+    marker = null;
+}
+
+$(function()
+{
+    $('#{{ id }}').on('show.bs.modal', function(event)
+    {
+        var width = '100%';
+        var height = parseInt($(window).height() * 0.7) + 'px';
+
+        $('#{{ pam }}').empty();
+        $('#{{ pam }}').append('<div id="{{ map }}" style="width:' + width + ';height:' + height + ';"></div>');
+    });
+
+    $('#{{ id }}').on('shown.bs.modal', function(event)
+    {
+        geosetup();
+    });
+
+    $('#{{ id }}').on('hide.bs.modal', function(event)
+    {
+        geocleanup();
+    });
+});
+
+</script>
+
+{% endmacro %}

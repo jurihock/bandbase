@@ -1,0 +1,57 @@
+{% import 'snippets.html' as snippets with context %}
+
+<!doctype html>
+
+<html lang="de" dir="ltr">
+
+<head>
+
+    <title>{{ config['BAND_NAME'] }}</title>
+
+    {{ snippets.meta() }}
+
+</head>
+
+<body class="">
+
+    <div class="page">
+
+        <div class="page-single">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col col-login mx-auto">
+
+                        <form class="card" action="{{ url_for('login') }}" method="post">
+
+                            <div class="card-body p-6">
+
+                                <div class="card-title">{{ config['BAND_NAME'] }}</div>
+
+                                <div class="form-group">
+                                    <input type="password" class="form-control {{ 'is-invalid' if error is sameas true }}" name="secret" placeholder="Passwort">
+                                </div>
+
+                                <div class="form-footer">
+                                    <button type="submit" class="btn btn-block {{ 'btn-danger' if error is sameas true else 'btn-primary' }}">Anmelden</button>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div> <!-- row -->
+
+            </div> <!-- container -->
+
+        </div> <!-- page-content -->
+
+    </div> <!-- page -->
+
+</body>
+
+</html>

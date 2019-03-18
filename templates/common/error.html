@@ -1,0 +1,53 @@
+{% import 'snippets.html' as snippets with context %}
+{% import 'icons.html' as icons %}
+
+<!doctype html>
+
+<html lang="de" dir="ltr">
+
+<head>
+
+    <title>{{ code }} &isin; {{ config['BAND_NAME'] }}</title>
+
+    {{ snippets.meta() }}
+
+</head>
+
+<body class="">
+
+    <div class="page">
+
+        <div class="page-content">
+
+            <div class="container text-center">
+
+                <h1 class="display-1 text-muted mb-5">
+                    <i class="si si-exclamation"></i>
+                    {{ code }}
+                </h1>
+
+                <h2 class="mb-8">
+                    {{ error }}
+                </h2>
+
+                <div class="btn-group">
+
+                    <a class="btn btn-primary" href="javascript:history.back()">
+                        {{ icons.icon('arrow-left') }} Ein Schritt zurück
+                    </a>
+
+                    <a class="btn btn-primary" href="javascript:location.reload()">
+                        {{ icons.icon('refresh-cw') }} Erneut versuchen
+                    </a>
+
+                </div>
+
+            </div> <!-- container -->
+
+        </div> <!-- page-content -->
+
+    </div> <!-- page -->
+
+</body>
+
+</html>

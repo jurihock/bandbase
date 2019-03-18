@@ -1,0 +1,95 @@
+% texify --pdf --engine=xetex filename.tex
+% latexmk --xelatex filename.tex
+
+\documentclass{scrartcl}
+
+\usepackage{csquotes}
+\usepackage{longtable,tabu}
+
+\usepackage{fontspec,polyglossia,xltxtra,xunicode}
+\setmainlanguage[spelling=new,babelshorthands=true]{german}
+\setmainfont[Mapping=tex-text]{Linux Libertine O}
+\setsansfont[Mapping=tex-text]{Linux Biolinum O}
+\addtokomafont{subject}{\sffamily}
+\addtokomafont{title}{\sffamily}
+\addtokomafont{date}{\tiny}
+\KOMAoptions{fontsize=11pt}
+
+\KOMAoptions{paper=a4}
+\KOMAoptions{pagesize, paper=landscape, DIV=14, BCOR=0mm}
+\areaset{1.1\textwidth}{\textheight}
+
+\setlength{\parindent}{0mm}
+\setlength{\itemindent}{0mm}
+
+% the content should fits into single page
+% so suppress page numbers
+% \renewcommand*{\titlepagestyle}{empty}
+
+\subject{Big Band \enquote{Brandheiß} Pforzheim}
+\title{Musikerliste}
+\author{Stand vom \today}
+\date{\null}
+
+\begin{document}
+
+\tiny
+\maketitle
+\normalsize
+
+\vskip -2em
+
+% \begin{minipage}[t][0pt]{\linewidth}
+
+\begin{longtabu} to \textwidth
+{
+    l
+    l
+    l
+    l
+    l
+    l
+    l
+}
+
+\textbf{\sffamily \textnumero} &
+\textbf{\sffamily Name} &
+\textbf{\sffamily Instrument} &
+\textbf{\sffamily E-Mail} &
+\textbf{\sffamily Telefon} &
+\textbf{\sffamily Anschrift} &
+\textbf{\sffamily Geboren am} \\
+\hline
+\endhead
+
+{% for person in persons %}
+
+{{ loop.index }} &
+{{ '\\textsc{' ~ person.LastName|tex ~ '}' }} &
+{{ person.Comment|tex }} &
+{{ person.EMail|tex }} &
+{{ person.MobilePhone|tex }} &
+{{ person.Street|tex ~ ' ' ~ person.HouseNumber|tex }} &
+{{ person.BirthDate|date|tex }} \\
+
+&
+{{ person.FirstName|tex }} &
+&
+&
+{{ person.LandlinePhone|tex }} &
+{{ person.PostalCode|tex ~ ' ' ~ person.City|tex }} &
+\\
+
+\hline
+
+{% endfor %}
+
+\end{longtabu}
+
+\vspace{1em}
+
+\centerline{Telefon im Probelokal: 07231 / 391544}
+
+% \end{minipage}
+
+\end{document}

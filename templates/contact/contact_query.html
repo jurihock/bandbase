@@ -1,0 +1,82 @@
+{% import 'button.html' as button %}
+{% import 'icons.html' as icons %}
+{% import 'table.html' as table %}
+
+{% extends 'basic.html' %}
+
+{% set title = 'Kontakte' %}
+
+{% block options %}
+
+	{% call button.group() %}
+
+		{% call button.link(url_for('contact_add'), type='secondary') %}
+			{{ icons.icon('plus') }} Kontakt anlegen...
+		{% endcall %}
+
+		{% call button.menu(None, 'Bandmusiker', type='secondary') %}
+			{{ button.menulink(url_for('contact_musicians_download_pdf'), 'Musikerliste als PDF-Datei') }}
+			{{ button.menulink(url_for('contact_musicians_download_csv'), 'Musikerliste als CSV-Datei') }}
+			{{ button.menusep() }}
+			{{ button.menutoggle('musicians', 'E-Mail an die Bandmusiker') }}
+		{% endcall %}
+
+	{% endcall %}
+
+{% endblock %}
+
+{% block content %}
+
+	<div id="musicians" class="card collapse">
+
+		<div class="card-body">
+
+			<p class="card-title">
+				Verwende bitte folgende Sammeladresse in deinem E-Mail-Programm
+				um (fast) alle Bandmusiker zu erreichen:
+			</p>
+
+			<p class="border p-2"><samp>{{ musicians_email_string }}</samp></p>
+
+		</div>
+
+		<div class="card-footer text-right">
+
+			{% call button.group() %}
+
+				{% set copy = "$('#musicians samp').text().toclipboard() && $('.musicians').fadeOut(500).fadeIn(250)" %}
+
+				{{ button.script(copy, 'Kopieren', class='musicians') }}
+				{{ button.toggle('musicians', 'Ausblenden') }}
+
+			{% endcall %}
+
+		</div>
+
+	</div>
+
+	<div class="card">
+
+		<div class="card-body">
+
+			{% call table.dynamic('contacts', url_for('contact_query', format='json'), cols=[5,3,3,1], sort=[[0,0]]) %}
+
+				<thead>
+
+					<tr>
+						<th>Name</th>
+						<th>Kategorie</th>
+						<th>Kommentar</th>
+						<th class="sorter-false filter-false">&nbsp;</th>
+					</tr>
+
+				</thead>
+
+				<tbody/>
+
+			{% endcall %}
+
+		</div>
+	</div>
+
+{% endblock %}

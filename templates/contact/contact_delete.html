@@ -1,0 +1,76 @@
+{% import "button.html" as button %}
+
+{% extends 'basic.html' %}
+
+{% set title = 'Kontakt löschen' %}
+
+{% block content %}
+
+    {% if contact.IsPersistent %}
+
+        <div class="card border-primary">
+
+            <div class="card-body">
+
+                Kontakt <a href="{{ url_for('contact_update', id=contact|int) }}">{{ contact|str }}</a>
+                ist als persistent hinterlegt und kann deshalb nicht gelöscht werden!
+
+            </div>
+
+            <div class="card-footer text-right">
+
+                {% call button.group() %}
+                    {{ button.link(url_for('contact_query'), 'Fortfahren', type='primary') }}
+                {% endcall %}
+
+            </div>
+
+        </div>
+
+    {% elif contact.IsRelated %}
+
+        <div class="card border-primary">
+
+            <div class="card-body">
+
+                Kontakt <a href="{{ url_for('contact_update', id=contact|int) }}">{{ contact|str }}</a>
+                ist noch mit anderen Datensätzen verknüpft und kann deshalb nicht direkt gelöscht werden.
+                Hierfür müssen zunächst bestehende Datenbeziehungen manuell aufgelöst werden!
+
+            </div>
+
+            <div class="card-footer text-right">
+
+                {% call button.group() %}
+                    {{ button.link(url_for('contact_query'), 'Fortfahren', type='primary') }}
+                {% endcall %}
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="card border-danger">
+
+            <div class="card-body">
+
+                Kontakt <a href="{{ url_for('contact_update', id=contact|int) }}">{{ contact|str }}</a>
+                wird nun unwiderruflich gelöscht!
+
+            </div>
+
+            <div class="card-footer text-right">
+
+                {% call button.group() %}
+                    {{ button.link(url_for('contact_query'), 'Nicht löschen!', type='success') }}
+                    {{ button.post(url_for('contact_delete', id=contact|int), 'Unwiderruflich löschen!', type='danger', innerclass='no-border-left-radius') }}
+                {% endcall %}
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}
