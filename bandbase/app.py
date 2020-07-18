@@ -26,11 +26,11 @@ class App(Flask):
         self.directory = os.path.dirname(os.path.abspath(__file__))
         click.secho(' * Bootstrapping application from directory {0}'.format(self.directory), fg='green')
 
-        default_config_file = os.path.join(self.directory, 'app.config')
+        default_config_file = os.path.join(self.directory, 'config', 'app.config')
         click.secho(' * Loading default config file {0}'.format(default_config_file))
         self.config.from_pyfile(default_config_file)
 
-        for alternative_config_file in glob.glob(os.path.join(self.directory, 'app.*.config')):
+        for alternative_config_file in glob.glob(os.path.join(self.directory, 'config', 'app.*.config')):
 
             click.secho(' * Loading alternative config file {0}'.format(alternative_config_file))
             self.config.from_pyfile(alternative_config_file)

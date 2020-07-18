@@ -2,12 +2,12 @@
 
 BANDBASE=$(dirname "$(readlink -f "$0")")
 
-source $BANDBASE/db.config
+source $BANDBASE/config/db.config
 
-if [ $(ls -1 $BANDBASE/db.*.config 2>/dev/null | wc -l) -gt 0 ]
+if [ $(ls -1 $BANDBASE/config/db.*.config 2>/dev/null | wc -l) -gt 0 ]
 then
 
-	for CONFIG in $BANDBASE/db.*.config
+	for CONFIG in $BANDBASE/config/db.*.config
 	do
 		source $CONFIG
 	done
@@ -23,12 +23,12 @@ case "$1" in
 	i|config)
 
 		echo "-- db.config"
-		echo "$(cat -sn $BANDBASE/db.config)"
+		echo "$(cat -sn $BANDBASE/config/db.config)"
 
-		if [ $(ls -1 $BANDBASE/db.*.config 2>/dev/null | wc -l) -gt 0 ]
+		if [ $(ls -1 $BANDBASE/config/db.*.config 2>/dev/null | wc -l) -gt 0 ]
 		then
 
-			for CONFIG in $BANDBASE/db.*.config
+			for CONFIG in $BANDBASE/config/db.*.config
 			do
 				echo "-- $(basename $CONFIG)"
 				echo "$(cat -sn $CONFIG)"
