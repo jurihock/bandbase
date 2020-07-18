@@ -1,9 +1,8 @@
-__data__/
+/data/
+/bandbase/config/app.*.config
+/bandbase/config/db.*.config
+
 __pycache__/
-
-app.*.config
-db.*.config
-
 .idea/
 .DS_Store
 *.sublime-*
