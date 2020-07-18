@@ -1,10 +1,3 @@
-def objects():
-
-    # https://www.iban.com/currency-codes
-    yield Currency(ID=276, Name='DEM')
-    yield Currency(ID=978, Name='EUR')
-    yield Currency(ID=840, Name='USD')
-
 if __name__ == '__main__':
 
     from app import app
@@ -36,6 +29,14 @@ if __name__ == '__main__':
 
             db.execute('SELECT setval(\'"{0}_ID_seq"\', {1});'.format(sequence, 999))
 
-        for object in objects():
+        objects = \
+        [
+            # https://www.iban.com/currency-codes
+            Currency(ID=276, Name='DEM'),
+            Currency(ID=978, Name='EUR'),
+            Currency(ID=840, Name='USD')
+        ]
+
+        for object in objects:
 
             db.add(object) if not object.ID else db.merge(object)

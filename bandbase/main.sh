@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BANDBASE=$(dirname "$(readlink -f "$0")")
 

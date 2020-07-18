@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BANDBASE=$(dirname "$(readlink -f "$0")")
 
@@ -7,15 +7,12 @@ source $BANDBASE/db.config
 if [ $(ls -1 $BANDBASE/db.*.config 2>/dev/null | wc -l) -gt 0 ]
 then
 
-	for DBCONFIG in $BANDBASE/db.*.config
+	for CONFIG in $BANDBASE/db.*.config
 	do
-		source $DBCONFIG
+		source $CONFIG
 	done
 
 fi
-
-DBSCHEMA=$DBBACKUP/schema.sql
-DBDATA=$DBBACKUP/data.sql
 
 TIMESTAMP=$(date --iso-8601=ns)
 DATESTAMP=$(date --iso-8601=date)
@@ -31,10 +28,10 @@ case "$1" in
 		if [ $(ls -1 $BANDBASE/db.*.config 2>/dev/null | wc -l) -gt 0 ]
 		then
 
-			for DBCONFIG in $BANDBASE/db.*.config
+			for CONFIG in $BANDBASE/db.*.config
 			do
-				echo "-- $(basename $DBCONFIG)"
-				echo "$(cat -sn $DBCONFIG)"
+				echo "-- $(basename $CONFIG)"
+				echo "$(cat -sn $CONFIG)"
 			done
 
 		fi
@@ -45,13 +42,13 @@ case "$1" in
 
 	c|create)
 
-		read -p "-- press [ENTER] key to create a blank new database \"$DBNAME\""
+		read -p "-- press [ENTER] key to create a blank new database \"$DATABASE\""
 
-		echo "-- drop database \"$DBNAME\""
-		dropdb --if-exists $DBNAME
+		echo "-- drop database \"$DATABASE\""
+		dropdb --if-exists $DATABASE
 
-		echo "-- create database \"$DBNAME\""
-		createdb $DBNAME
+		echo "-- create database \"$DATABASE\""
+		createdb $DATABASE
 
         echo "-- execute script $BANDBASE/db.py"
 		python3 $BANDBASE/db.py
@@ -62,10 +59,10 @@ case "$1" in
 
 	d|drop)
 
-		read -p "-- press [ENTER] key to drop the database \"$DBNAME\""
+		read -p "-- press [ENTER] key to drop the database \"$DATABASE\""
 
-		echo "-- drop database \"$DBNAME\""
-		dropdb --if-exists $DBNAME
+		echo "-- drop database \"$DATABASE\""
+		dropdb --if-exists $DATABASE
 
 		echo "-- done"
 
@@ -73,34 +70,34 @@ case "$1" in
 
 	b|backup)
 
-		read -p "-- press [ENTER] key to backup the database \"$DBNAME\""
+		read -p "-- press [ENTER] key to backup the database \"$DATABASE\""
 
-		mkdir -p $DBBACKUP
+		mkdir -p $BACKUP
 
-		echo "-- backup schema of \"$DBNAME\""
-		echo "-- BANDBASE SCHEMA DUMP" > $DBSCHEMA
-		echo "-- TIMESTAMP: $TIMESTAMP" >> $DBSCHEMA
-		echo "-- FILEPATH:  $DBSCHEMA" >> $DBSCHEMA
-		echo >> $DBSCHEMA
-		echo "BEGIN;" >> $DBSCHEMA
-		echo >> $DBSCHEMA
-		pg_dump $DBNAME --no-owner --schema-only >> $DBSCHEMA
-		echo >> $DBSCHEMA
-		echo "COMMIT;" >> $DBSCHEMA
+		echo "-- backup schema of \"$DATABASE\""
+		echo "-- BANDBASE SCHEMA DUMP" > $SCHEMA
+		echo "-- TIMESTAMP: $TIMESTAMP" >> $SCHEMA
+		echo "-- FILEPATH:  $SCHEMA" >> $SCHEMA
+		echo >> $SCHEMA
+		echo "BEGIN;" >> $SCHEMA
+		echo >> $SCHEMA
+		pg_dump $DATABASE --no-owner --schema-only >> $SCHEMA
+		echo >> $SCHEMA
+		echo "COMMIT;" >> $SCHEMA
 
-		echo "-- backup data of \"$DBNAME\""
-		echo "-- BANDBASE DATA DUMP" > $DBDATA
-		echo "-- TIMESTAMP: $TIMESTAMP" >> $DBDATA
-		echo "-- FILEPATH:  $DBDATA" >> $DBDATA
-		echo >> $DBDATA
-		echo "BEGIN;" >> $DBDATA
-		echo >> $DBDATA
-		pg_dump $DBNAME --no-owner --data-only >> $DBDATA
-		echo >> $DBDATA
-		echo "COMMIT;" >> $DBDATA
+		echo "-- backup data of \"$DATABASE\""
+		echo "-- BANDBASE DATA DUMP" > $DATA
+		echo "-- TIMESTAMP: $TIMESTAMP" >> $DATA
+		echo "-- FILEPATH:  $DATA" >> $DATA
+		echo >> $DATA
+		echo "BEGIN;" >> $DATA
+		echo >> $DATA
+		pg_dump $DATABASE --no-owner --data-only >> $DATA
+		echo >> $DATA
+		echo "COMMIT;" >> $DATA
 
 		echo "-- zip schema.sql and data.sql"
-		pushd $DBBACKUP > /dev/null
+		pushd $BACKUP > /dev/null
 		zip -q schema+data.zip schema.sql data.sql
 		mkdir -p $YEAR
 		cp schema+data.zip $YEAR/$DATESTAMP.zip
@@ -112,22 +109,22 @@ case "$1" in
 
 	r|restore)
 
-		[ -f "$DBSCHEMA" ] || { echo "ERROR: Schema file \"$DBSCHEMA\" not found!" ; exit 1 ; }
-		[ -f "$DBDATA" ]   || { echo "ERROR: Data file \"$DBDATA\" not found!" ; exit 1 ; }
+		[ -f "$SCHEMA" ] || { echo "ERROR: Schema file \"$SCHEMA\" not found!" ; exit 1 ; }
+		[ -f "$DATA" ]   || { echo "ERROR: Data file \"$DATA\" not found!" ; exit 1 ; }
 
-		read -p "-- press [ENTER] key to restore the database \"$DBNAME\""
+		read -p "-- press [ENTER] key to restore the database \"$DATABASE\""
 
-		echo "-- drop database \"$DBNAME\""
-		dropdb --if-exists $DBNAME
+		echo "-- drop database \"$DATABASE\""
+		dropdb --if-exists $DATABASE
 
-		echo "-- create database \"$DBNAME\""
-		createdb $DBNAME
+		echo "-- create database \"$DATABASE\""
+		createdb $DATABASE
 
-		echo "-- restore schema of \"$DBNAME\""
-		psql -q $DBNAME < $DBSCHEMA
+		echo "-- restore schema of \"$DATABASE\""
+		psql -q $DATABASE < $SCHEMA
 
-		echo "-- restore data of \"$DBNAME\""
-		psql -q $DBNAME < $DBDATA
+		echo "-- restore data of \"$DATABASE\""
+		psql -q $DATABASE < $DATA
 
 		echo "-- done"
 
@@ -135,13 +132,13 @@ case "$1" in
 
 	v|vacuum)
 
-		psql $DBNAME -c "VACUUM VERBOSE ANALYZE;"
+		psql $DATABASE -c "VACUUM VERBOSE ANALYZE;"
 
 		;;
 
 	q|sql)
 
-		psql $DBNAME
+		psql $DATABASE
 
 		;;
 
@@ -160,12 +157,12 @@ case "$1" in
         if [ -z "$FILE" ]
         then
 
-            psql $DBNAME -c "COPY ($QUERY) TO STDOUT WITH ($OPTIONS);"
+            psql $DATABASE -c "COPY ($QUERY) TO STDOUT WITH ($OPTIONS);"
 
         else
 
             echo "-- write query result $QUERY to file $FILE"
-            psql $DBNAME -c "COPY ($QUERY) TO STDOUT WITH ($OPTIONS);" > $FILE
+            psql $DATABASE -c "COPY ($QUERY) TO STDOUT WITH ($OPTIONS);" > $FILE
 
         fi
 
