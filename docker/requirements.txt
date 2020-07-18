@@ -1,0 +1,7 @@
+flask
+icalendar
+numpy
+psycopg2
+python-dateutil
+pytz
+sqlalchemy
