@@ -71,12 +71,12 @@
                 <div class="nav-item d-none d-md-flex">
                     <div class="btn-list">
 
-                        {% if config['BAND_WWW'] %}
+                        {% if config['BAND_WEBSITE'] %}
 
-                            <a href="{{ config['BAND_WWW'] }}" class="btn btn-sm btn-outline-primary"
-                               title="Zur Webseite &bdquo;{{ config['BAND_WWW']|hostname }}&ldquo; gehen?"
+                            <a href="{{ config['BAND_WEBSITE'] }}" class="btn btn-sm btn-outline-primary"
+                               title="Zur Webseite &bdquo;{{ config['BAND_WEBSITE']|hostname }}&ldquo; gehen?"
                                data-toggle="tooltip" data-placement="bottom">
-                                {{ icons.icon('globe') }} {{ config['BAND_ABBR'] }} Webseite
+                                {{ icons.icon('globe') }} {{ config['BAND_NICKNAME'] }} Webseite
                             </a>
 
                         {% endif %}
@@ -117,7 +117,7 @@
                     <li class="nav-item">
                         {% set active = 'active' if request.path == '/' else '' %}
                         <a href="{{ url_for('index') }}" class="nav-link {{ active }}">
-                            {{ icons.icon('home') }} {{ config['BAND_ABBR'] }} Übersicht
+                            {{ icons.icon('home') }} {{ config['BAND_NICKNAME'] }} Übersicht
                         </a>
                     </li>
                     <li class="nav-item">
