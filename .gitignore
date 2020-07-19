@@ -1,4 +1,6 @@
 /data/
+/downloads/
+
 /bandbase/config/app.*.config
 /bandbase/config/db.*.config
 
