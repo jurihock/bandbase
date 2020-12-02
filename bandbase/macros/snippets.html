@@ -1,5 +1,9 @@
 {% import 'icons.html' as icons %}
 
+{% set libs = dict() %}
+{% do libs.update({'js':  ['jquery','bootstrap','tabler','tablesorter']}) %}
+{% do libs.update({'css': ['fontawesome', 'bootstrap','tabler','tablesorter']}) %}
+
 {% macro meta() %}
 
     <meta charset="utf-8">
@@ -15,26 +19,20 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
 
-    <!-- require.js -->
+    <!-- js -->
 
-    <script src="{{ url_for('static', filename='js/require.min.js') }}"></script>
-    <script>requirejs.config({ baseUrl: '/' });</script>
+    <script src="{{ url_for('static', filename='js/require/require.js') }}"></script>
+    <script>requirejs.config();</script>
 
-    <!-- tabler dashboard core (without the provided tablesorter plugin) -->
+    {% for lib in libs['js'] %}
+    <script src="{{ url_for('static', filename='js/%s/%s.js'|format(lib, lib)) }}"></script>
+    {% endfor %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <!-- css -->
 
-    <!-- custom plugins -->
-
-    <script src="{{ url_for('static', filename='plugins/prototypes/plugin.js') }}"></script>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/tablesorter-mottie/plugin.css') }}">
-    <script src="{{ url_for('static', filename='plugins/tablesorter-mottie/plugin.js') }}"></script>
-
-    <script src="{{ url_for('static', filename='plugins/tabs/plugin.js') }}"></script>
-
-    <!-- just slightly increase the default font size -->
+    {% for lib in libs['css'] %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/%s/%s.css'|format(lib, lib)) }}"/>
+    {% endfor %}
 
     <style> html { font-size: 1rem; } </style>
 
