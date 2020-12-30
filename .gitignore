@@ -1,11 +1,13 @@
 /data/
 /downloads/
 
-/bandbase/config/app.*.config
-/bandbase/config/db.*.config
-
 __pycache__/
-.idea/
-.DS_Store
-*.sublime-*
+build/
+node_modules/
+
+.*/
 *.py[cod]
+*.sublime-*
+
+.DS_Store
+Thumbs.db
