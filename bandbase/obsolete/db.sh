@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 BANDBASE=$(dirname "$(readlink -f "$0")")
 
@@ -14,8 +14,8 @@ then
 
 fi
 
-TIMESTAMP=$(date --iso-8601=ns)
-DATESTAMP=$(date --iso-8601=date)
+TIMESTAMP=$(date +%H:%M:%S)
+DATESTAMP=$(date +%Y-%m-%d)
 YEAR=$(date +%Y)
 
 case "$1" in
@@ -23,7 +23,7 @@ case "$1" in
 	i|config)
 
 		echo "-- db.config"
-		echo "$(cat -sn $BANDBASE/config/db.config)"
+		echo "$(cat -n $BANDBASE/config/db.config)"
 
 		if [ $(ls -1 $BANDBASE/config/db.*.config 2>/dev/null | wc -l) -gt 0 ]
 		then
@@ -31,7 +31,7 @@ case "$1" in
 			for CONFIG in $BANDBASE/config/db.*.config
 			do
 				echo "-- $(basename $CONFIG)"
-				echo "$(cat -sn $CONFIG)"
+				echo "$(cat -n $CONFIG)"
 			done
 
 		fi
