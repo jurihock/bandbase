@@ -1,0 +1,23 @@
+{
+  "description": "Bandbase Frontend",
+  "name": "@bandbase/frontend",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.6.0",
+    "@tabler/core": "^1.0.0-alpha.21",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.0-beta1",
+    "tablesorter": "^2.31.3",
+    "vue": "^3.0.4",
+    "vue-router": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0"
+  }
+}
