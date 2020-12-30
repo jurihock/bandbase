@@ -2,6 +2,18 @@ FROM alpine:latest
 
 MAINTAINER bandbase@jurihock.de
 
+ENV LANG en_US.utf8
+ENV PGDATA /bandbase/postgres
+ENV PGDATABASE bandbase
+ENV PGUSER bandbase
+
+EXPOSE 5432
+VOLUME ["/bandbase"]
+
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 ADD requirements.txt /tmp/requirements.txt
 
 RUN apk update && \
@@ -20,23 +32,10 @@ RUN apk update && \
 #    if [ ! -e /usr/bin/pip ]; then ln -s $(which pip3) /usr/bin/pip; fi && \
 #    if [ ! -e /usr/bin/python ]; then ln -s $(which python3) /usr/bin/python; fi
 
-RUN wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64" && \
-    chmod +x /usr/local/bin/gosu
-
 RUN cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime && \
     echo "Europe/Berlin" > /etc/timezone
 
-RUN git clone "https://github.com/jurihock/bandbase.git" /bandbase/app
+RUN wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64" && \
+    chmod +x /usr/local/bin/gosu
 
-ENV LANG en_US.utf8
-ENV PGDATA /bandbase/postgresql
-ENV PGDATABASE bandbase
-ENV PGUSER bandbase
-
-VOLUME ["/bandbase"]
-
-EXPOSE 2345
-
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+RUN git clone "https://github.com/jurihock/bandbase.git" /bandbase/git
