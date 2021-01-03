@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <Header/>
+    <PageHeader/>
 
 <!--  <div class="toast-container position-absolute top-0 end-0 p-3">
     <div class="toast d-flex align-items-center show" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" data-bs-toggle="toast">
@@ -42,18 +42,18 @@
           </div>
         </div>
       </div>
-      <Footer/>
+      <PageFooter/>
     </div>
   </div>
 </template>
 
 <script>
-import Header from '@/components/pages/Header.vue';
-import Footer from '@/components/pages/Footer.vue';
+import PageHeader from '@/components/parts/PageHeader.vue';
+import PageFooter from '@/components/parts/PageFooter.vue';
 
 export default {
   name: 'Page',
-  components: { Header, Footer },
+  components: { PageHeader, PageFooter },
   props: {}
 }
 </script>

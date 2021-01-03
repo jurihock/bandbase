@@ -10,12 +10,16 @@
 </template>
 
 <script>
-import Page from '@/components/pages/Page.vue';
+import Page from '@/components/parts/Page.vue';
 
 export default {
   name: 'AboutPage',
   components: { Page },
-  props: {}
+  data: function() {
+    return {}
+  },
+  props: {},
+  methods: {}
 }
 </script>
 

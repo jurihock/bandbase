@@ -61,7 +61,7 @@
 import config from '@/config.js';
 
 export default {
-  name: 'Header',
+  name: 'PageHeader',
   components: {},
   data: function() {
     return {

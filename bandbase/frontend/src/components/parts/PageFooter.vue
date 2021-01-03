@@ -33,7 +33,7 @@
 import config from '@/config.js';
 
 export default {
-  name: 'Pages',
+  name: 'PageFooter',
   components: {},
   data: function() {
     return {

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Page from '@/components/pages/Page.vue';
+import Page from '@/components/parts/Page.vue';
 import DynamicTable from '@/components/parts/DynamicTable.vue';
 
 export default {
