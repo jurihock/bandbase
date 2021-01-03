@@ -14,7 +14,6 @@ export default {
     return {}
   },
   props: {},
-  methods: {},
   mounted: function()
   {
     document.body.classList.add(
@@ -30,7 +29,8 @@ export default {
       'border-primary',
       'd-flex',
       'flex-column');
-  }
+  },
+  methods: {}
 }
 </script>
 

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Screen from '@/components/screens/Screen.vue';
+import Screen from '@/components/parts/Screen.vue';
 import config from '@/config.js';
 import axios from 'axios';
 
