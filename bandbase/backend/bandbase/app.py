@@ -24,6 +24,7 @@ class App(FastAPI):
 
         self.include_router(bandbase.routers.common)
         self.include_router(bandbase.routers.session)
+        self.include_router(bandbase.routers.table)
 
         # seel also
         # https://fastapi.tiangolo.com/tutorial/cors

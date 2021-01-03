@@ -1,8 +1,6 @@
 <template>
   <Page>
-    <template v-slot:title>
-      Dashboard
-    </template>
+    <template v-slot:title>Kontakte</template>
     <template v-slot:content>
       <DynamicTable source="contacts"
                     v-bind:columns="{
@@ -18,7 +16,7 @@ import Page from '@/components/pages/Page.vue';
 import DynamicTable from '@/components/parts/DynamicTable.vue';
 
 export default {
-  name: 'DashboardPage',
+  name: 'ContactTablePage',
   components: { Page, DynamicTable },
   data: function() {
     return {}

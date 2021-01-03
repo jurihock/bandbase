@@ -4,6 +4,10 @@ import axios from 'axios';
 import DashboardPage from '@/components/pages/DashboardPage.vue';
 import AboutPage from '@/components/pages/AboutPage.vue';
 
+import ContactTablePage from '@/components/pages/ContactTablePage.vue';
+import GigTablePage from '@/components/pages/GigTablePage.vue';
+import ScoreTablePage from '@/components/pages/ScoreTablePage.vue';
+
 import LoginScreen from '@/components/screens/LoginScreen.vue';
 import LogoutScreen from '@/components/screens/LogoutScreen.vue';
 
@@ -34,6 +38,24 @@ const routes = [
     path: '/about',
     name: 'AboutPage',
     component: AboutPage,
+    beforeEnter: auth,
+  },
+  {
+    path: '/contact',
+    name: 'ContactTablePage',
+    component: ContactTablePage,
+    beforeEnter: auth,
+  },
+  {
+    path: '/gig',
+    name: 'GigTablePage',
+    component: GigTablePage,
+    beforeEnter: auth,
+  },
+  {
+    path: '/score',
+    name: 'ScoreTablePage',
+    component: ScoreTablePage,
     beforeEnter: auth,
   },
 ];

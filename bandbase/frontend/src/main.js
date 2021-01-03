@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import 'bootstrap';
 import '@tabler/core/dist/css/tabler.min.css';
+import 'feather-icons/dist/feather.min.js';
 
 import App from '@/App.vue';
 import config from '@/config.js';

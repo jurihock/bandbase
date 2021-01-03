@@ -1,0 +1,32 @@
+<template>
+  <Page>
+    <template v-slot:title>Notenlager</template>
+    <template v-slot:content>
+      <DynamicTable source="scores"
+                    v-bind:columns="{
+                      name:    { text: 'Name',      width: 5 },
+                      stockid: { text: 'LGR',       width: 1, title: 'Lagerkennung: Buchstabe, Nummer, Zähler' },
+                      edition: { text: 'AUS',       width: 1, title: 'Ausgabe' },
+                      gsm:     { text: 'GSM',       width: 2, title: 'Genre, Stil, Metronomtext' },
+                      comment: { text: 'Kommentar', width: 2 }}"/>
+    </template>
+  </Page>
+</template>
+
+<script>
+import Page from '@/components/pages/Page.vue';
+import DynamicTable from '@/components/parts/DynamicTable.vue';
+
+export default {
+  name: 'ScoreTablePage',
+  components: { Page, DynamicTable },
+  data: function() {
+    return {}
+  },
+  props: {},
+  methods: {}
+}
+</script>
+
+<style scoped>
+</style>

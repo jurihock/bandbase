@@ -6,10 +6,10 @@
         <div class="col-lg-auto ms-lg-auto">
           <ul class="list-inline list-inline-dots mb-0">
             <li class="list-inline-item">
-              <router-link :to="{ name: 'LoginScreen'}" class="link-secondary">Anmelden</router-link>
+              <router-link v-bind:to="{ name: 'LoginScreen'}" class="link-secondary">Anmelden</router-link>
             </li>
             <li class="list-inline-item">
-              <router-link :to="{ name: 'LogoutScreen'}" class="link-secondary">Abmelden</router-link>
+              <router-link v-bind:to="{ name: 'LogoutScreen'}" class="link-secondary">Abmelden</router-link>
             </li>
           </ul>
         </div>
@@ -42,11 +42,11 @@ export default {
     }
   },
   props: {},
-  methods: {},
   created: function() {
     this.version = config.bandbase.name + ' v' + config.bandbase.version;
     this.copyright = config.bandbase.copyright;
-  }
+  },
+  methods: {}
 }
 </script>
 

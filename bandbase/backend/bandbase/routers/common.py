@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, Request
+import json
+
+from fastapi import APIRouter, Depends, Request, Response, HTTPException
 from typing import Optional
 
 import bandbase.core.common
@@ -20,8 +22,11 @@ def test(request: Request):
 
     with bandbase.core.database.session() as db:
 
-        gigs = db.query(Gig).all()
-        print(gigs)
+        contacts = db.query(Contact).all()
+
+        total = len(contacts)
+
+        print(total)
 
     return {}
 

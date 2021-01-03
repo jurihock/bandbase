@@ -2,7 +2,7 @@
   <div class="page">
     <Header/>
 
-  <div class="toast-container position-absolute top-0 end-0 p-3">
+<!--  <div class="toast-container position-absolute top-0 end-0 p-3">
     <div class="toast d-flex align-items-center show" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" data-bs-toggle="toast">
       <div class="toast-body">
         Hello, world! This is a toast message.
@@ -20,7 +20,7 @@
         This is another toast message.
       </div>
     </div>
-  </div>
+  </div>-->
 
     <div class="content">
       <div class="container-xl">
@@ -36,7 +36,11 @@
             </div>
           </div>
         </div>
-        <slot name="content"/>
+        <div class="row row-cards">
+          <div class="col-12">
+            <slot name="content"/>
+          </div>
+        </div>
       </div>
       <Footer/>
     </div>

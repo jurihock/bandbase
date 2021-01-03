@@ -1,13 +1,12 @@
 <template>
   <Page>
-    <template v-slot:title>
-      Dashboard
-    </template>
+    <template v-slot:title>Gigs</template>
     <template v-slot:content>
-      <DynamicTable source="contacts"
+      <DynamicTable source="gigs"
                     v-bind:columns="{
                       name:     { text: 'Name',      width: 5 },
-                      category: { text: 'Kategorie', width: 3 },
+                      date:     { text: 'Datum',     width: 1 },
+                      location: { text: 'Ort',       width: 2 },
                       comment:  { text: 'Kommentar', width: 3 }}"/>
     </template>
   </Page>
@@ -18,7 +17,7 @@ import Page from '@/components/pages/Page.vue';
 import DynamicTable from '@/components/parts/DynamicTable.vue';
 
 export default {
-  name: 'DashboardPage',
+  name: 'GigTablePage',
   components: { Page, DynamicTable },
   data: function() {
     return {}
