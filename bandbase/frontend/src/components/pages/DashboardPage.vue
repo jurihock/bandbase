@@ -4,22 +4,22 @@
       Dashboard
     </template>
     <template v-slot:content>
-      <DynamicTable source="contacts"
-                    v-bind:columns="{
-                      name:     { text: 'Name',      width: 5 },
-                      category: { text: 'Kategorie', width: 3 },
-                      comment:  { text: 'Kommentar', width: 3 }}"/>
+      <Tabster>
+        <Tab title="foo">FOO</Tab>
+        <Tab title="bar">BAR</Tab>
+      </Tabster>
     </template>
   </Page>
 </template>
 
 <script>
 import Page from '@/components/parts/Page.vue';
-import DynamicTable from '@/components/parts/DynamicTable.vue';
+import Tabster from '@/components/parts/Tabster.vue';
+import Tab from '@/components/parts/Tab.vue';
 
 export default {
   name: 'DashboardPage',
-  components: { Page, DynamicTable },
+  components: { Page, Tabster, Tab },
   data: function() {
     return {}
   },
