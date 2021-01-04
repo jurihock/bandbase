@@ -1,13 +1,13 @@
 <template>
   <div class="toast d-flex align-items-center show p-0 mb-2"
        ref="toast"
-       v-bind:class="toast.class"
-       v-bind:style="toast.background.current ? 'background-color:' + toast.background.current : ''"
+       v-bind:style="background.current ? 'background-color:' + background.current : ''"
+       v-bind:class="class"
        v-on:mouseenter="on_mouse_enter"
        v-on:mouseleave="on_mouse_leave"
        v-on:click="on_mouse_click">
     <div class="toast-body"
-         v-html="toast.message"></div>
+         v-html="html"></div>
   </div>
 </template>
 
@@ -17,15 +17,12 @@ export default {
   components: {},
   data: function() {
     return {
-      timeout: null,
-      toast: {
-        message: null,
-        class: null,
-        background: {
-          native: null,
-          patched: null,
-          current: null
-        }
+      html: null,
+      class: null,
+      background: {
+        native: null,
+        patched: null,
+        current: null
       }
     }
   },
@@ -35,10 +32,10 @@ export default {
     message: String
   },
   mounted: function() {
-    this.timeout = setTimeout(this.close, 5000);
-    this.toast.message = this.get_toast_message();
-    this.toast.class = this.get_toast_class();
-    this.toast.background = this.get_toast_background();
+    this.html = this.get_toast_html();
+    this.class = this.get_toast_class();
+    this.background = this.get_toast_background();
+    this.$emit('open', this.id);
   },
   methods: {
     parse_rgba_color: function(value) {
@@ -73,7 +70,7 @@ export default {
         background.native = null;
         background.patched = null;
         background.current = null;
-        console.error('Unable to parse the native toast background color!', error);
+        console.error('Unable to identify the native toast background color!', error);
       }
       return background;
     },
@@ -86,21 +83,18 @@ export default {
         return 'alert alert-success';
       return 'alert alert-info';
     },
-    get_toast_message: function() {
+    get_toast_html: function() {
       return this.message.replaceAll('<a ', '<a class="alert-link" ');
     },
     on_mouse_enter: function() {
-      clearTimeout(this.timeout);
-      this.toast.background.current = this.toast.background.patched;
+      this.background.current = this.background.patched;
+      this.$emit('pause', this.id);
     },
     on_mouse_leave: function() {
-      this.timeout = setTimeout(this.close, 1500);
-      this.toast.background.current = this.toast.background.native;
+      this.background.current = this.background.native;
+      this.$emit('resume', this.id);
     },
     on_mouse_click: function() {
-      this.close();
-    },
-    close: function() {
       this.$emit('close', this.id);
     }
   }

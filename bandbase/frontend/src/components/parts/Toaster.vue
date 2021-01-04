@@ -1,46 +1,63 @@
 <template>
   <div class="toast-container position-absolute top-0 end-0 p-2">
-    <Toast v-for="toast in toasts"
-           v-bind:id="toast.id"
+    <Toast v-for="(toast, id) in toasts"
+           v-bind:key="id"
+           v-bind:id="id"
            v-bind:subject="toast.subject"
            v-bind:message="toast.message"
-           v-on:close="on_toast_closing"/>
+           v-on:open="on_toast_open"
+           v-on:pause="on_toast_pause"
+           v-on:resume="on_toast_resume"
+           v-on:close="on_toast_close"/>
   </div>
 </template>
 
 <script>
 import Toast from '@/components/parts/Toast.vue';
 import toaster from '@/toaster.js';
-import _remove from 'lodash/remove';
+import { v4 as uuid } from 'uuid';
 
 export default {
   name: 'Toaster',
   components: { Toast },
   data: function() {
     return {
-      toasts: []
+      toasts: {}
     }
   },
   props: {},
   mounted: function() {
-    toaster.on('toast',   (message) => this.on_toast_event('toast',   message));
-    toaster.on('success', (message) => this.on_toast_event('success', message));
-    toaster.on('warning', (message) => this.on_toast_event('warning', message));
-    toaster.on('error',   (message) => this.on_toast_event('error',   message));
+    toaster.on('toast',   (message) => this.on_toast_create('toast',   message));
+    toaster.on('success', (message) => this.on_toast_create('success', message));
+    toaster.on('warning', (message) => this.on_toast_create('warning', message));
+    toaster.on('error',   (message) => this.on_toast_create('error',   message));
   },
   methods: {
-    roll_the_dice: function() {
-      return (Date.now() + Math.random()).toString();
-    },
-    on_toast_closing: function(id) {
-      _remove(this.toasts, toast => toast.id === id);
-    },
-    on_toast_event: function(subject, message) {
-      this.toasts.push({
-        id: this.roll_the_dice(),
+    on_toast_create: function(subject, message) {
+      const id = uuid();
+      this.toasts[id] = {
         subject: subject,
-        message: message
-      });
+        message: message,
+        timeout: null
+      };
+    },
+    on_toast_open: function(id) {
+      if (!this.toasts.hasOwnProperty(id)) return;
+      const close = () => this.on_toast_close(id);
+      this.toasts[id].timeout = setTimeout(close, 5000);
+    },
+    on_toast_pause: function(id) {
+      if (!this.toasts.hasOwnProperty(id)) return;
+      clearTimeout(this.toasts[id].timeout);
+    },
+    on_toast_resume: function(id) {
+      if (!this.toasts.hasOwnProperty(id)) return;
+      const close = () => this.on_toast_close(id);
+      this.toasts[id].timeout = setTimeout(close, 1500);
+    },
+    on_toast_close: function(id) {
+      if (!this.toasts.hasOwnProperty(id)) return;
+      delete this.toasts[id];
     }
   }
 }
