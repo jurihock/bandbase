@@ -14,6 +14,7 @@
     "bootstrap": "^5.0.0-beta1",
     "feather-icons": "^4.28.0",
     "lodash": "^4.17.20",
+    "mitt": "^2.1.0",
     "vue": "^3.0.4",
     "vue-router": "^4.0.2"
   },
