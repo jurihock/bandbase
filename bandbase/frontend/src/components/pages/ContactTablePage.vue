@@ -4,9 +4,9 @@
     <template v-slot:content>
       <DynamicTable source="contacts"
                     v-bind:columns="{
-                      name:     { text: 'Name',      width: 5 },
-                      category: { text: 'Kategorie', width: 3 },
-                      comment:  { text: 'Kommentar', width: 3 }}"/>
+                      name:     { title: 'Name',      width: 5 },
+                      category: { title: 'Kategorie', width: 3 },
+                      comment:  { title: 'Kommentar', width: 3 }}"/>
     </template>
   </Page>
 </template>

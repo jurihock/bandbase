@@ -4,10 +4,10 @@
     <template v-slot:content>
       <DynamicTable source="gigs"
                     v-bind:columns="{
-                      name:     { text: 'Name',      width: 5 },
-                      date:     { text: 'Datum',     width: 1 },
-                      location: { text: 'Ort',       width: 2 },
-                      comment:  { text: 'Kommentar', width: 3 }}"/>
+                      name:     { title: 'Name',      width: 5 },
+                      date:     { title: 'Datum',     width: 1 },
+                      location: { title: 'Ort',       width: 2 },
+                      comment:  { title: 'Kommentar', width: 3 }}"/>
     </template>
   </Page>
 </template>

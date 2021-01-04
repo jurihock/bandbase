@@ -47,7 +47,7 @@ def SQL_LIMIT_OFFSET(sql, limit: int, offset: int):
 class Badge(BaseModel):
     column: str
     text: Optional[str] = None
-    title: Optional[str] = None
+    tooltip: Optional[str] = None
     style: Optional[str] = None
 
 
@@ -228,10 +228,10 @@ def gigs(query: TableQuery):
 
         badges = \
         [
-            {'column': 'name', 'title': 'Versteckt', 'style': 'background:#999'},
-            {'column': 'name', 'title': 'Kalender',  'style': 'background:#090'},
-            {'column': 'name', 'title': 'Webseite',  'style': 'background:#009'},
-            {'column': 'name', 'title': 'Flyer',     'style': 'background:#900'},
+            {'column': 'name', 'tooltip': 'Versteckt', 'style': 'background:#999'},
+            {'column': 'name', 'tooltip': 'Kalender',  'style': 'background:#090'},
+            {'column': 'name', 'tooltip': 'Webseite',  'style': 'background:#009'},
+            {'column': 'name', 'tooltip': 'Flyer',     'style': 'background:#900'},
         ]
 
         return \

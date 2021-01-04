@@ -4,11 +4,11 @@
     <template v-slot:content>
       <DynamicTable source="scores"
                     v-bind:columns="{
-                      name:    { text: 'Name',      width: 5 },
-                      stockid: { text: 'LGR',       width: 1, title: 'Lagerkennung: Buchstabe, Nummer, Zähler' },
-                      edition: { text: 'AUS',       width: 1, title: 'Ausgabe' },
-                      gsm:     { text: 'GSM',       width: 2, title: 'Genre, Stil, Metronomtext' },
-                      comment: { text: 'Kommentar', width: 2 }}"/>
+                      name:    { title: 'Name',      width: 5 },
+                      stockid: { title: 'LGR',       width: 1, tooltip: 'Lagerkennung: Buchstabe, Nummer, Zähler' },
+                      edition: { title: 'AUS',       width: 1, tooltip: 'Ausgabe' },
+                      gsm:     { title: 'GSM',       width: 2, tooltip: 'Genre, Stil, Metronomtext' },
+                      comment: { title: 'Kommentar', width: 2 }}"/>
     </template>
   </Page>
 </template>

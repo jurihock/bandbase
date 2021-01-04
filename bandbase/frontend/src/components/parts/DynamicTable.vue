@@ -10,8 +10,8 @@
         <thead>
           <tr>
             <th v-for="column in table.columns"
-                v-bind:title="columns[column.name].title">
-              {{ columns[column.name].text }}
+                v-bind:title="columns[column.name].tooltip">
+              {{ columns[column.name].title }}
             </th>
             <th>&nbsp;</th>
           </tr>
@@ -28,7 +28,7 @@
               <span v-if="(row.badge != null) && (row.badge.column == column.name)"
                     class="badge me-1"
                     v-bind:style="row.badge.style"
-                    v-bind:title="row.badge.title">
+                    v-bind:title="row.badge.tooltip">
                 {{ row.badge.text }}
               </span>
               {{ row.values[column.name] }}
