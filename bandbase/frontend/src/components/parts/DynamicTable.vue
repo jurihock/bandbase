@@ -1,5 +1,9 @@
 <template>
-  <div class="card">
+  <div v-show="error" class="alert alert-important alert-danger" role="alert">
+    <p>Die Tabelle konnte leider nicht geladen werden!</p>
+    <p><var>{{ error }}</var></p>
+  </div>
+  <div v-show="!pending && !error" class="card">
     <div class="table-responsive my-0">
       <table class="table table-hover table-vcenter not-table-sm card-table">
         <colgroup>
@@ -59,6 +63,8 @@ export default {
   components: { DynamicTableFilter, DynamicTablePager },
   data: function() {
     return {
+      pending: true,
+      error: null,
       url: config.backend + '/table/' + this.source,
       query: {
         filter: {},
@@ -105,20 +111,24 @@ export default {
       this.table.columns = response.data.columns;
       this.query.sort = response.data.query.sort;
       this.query.limit = response.data.query.limit;
+      this.error = null;
     },
     on_probe_error: function(error) {
       this.table.rows = [];
       this.table.total = 0;
-      console.log(error);
+      this.error = error.toString();
+      console.error(error);
     },
     on_update_callback: function(response) {
       this.table.rows = response.data.rows;
       this.table.total = response.data.total;
+      this.error = null;
     },
     on_update_error: function(error) {
       this.table.rows = [];
       this.table.total = 0;
-      console.log(error);
+      this.error = error.toString();
+      console.error(error);
     },
     probe: function() {
       axios.post(this.url, {probe: true})
@@ -126,6 +136,7 @@ export default {
            .then(() => {
              axios.post(this.url, this.query)
                   .then(this.on_update_callback)
+                  .then(() => { this.pending = false })
                   .catch(this.on_update_error);
            })
            .catch(this.on_probe_error);
