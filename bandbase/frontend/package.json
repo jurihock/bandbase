@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta1",
     "feather-icons": "^4.28.0",
+    "flatpickr": "^4.6.9",
     "lodash": "^4.17.20",
     "mitt": "^2.1.0",
     "uuid": "^8.3.2",

@@ -2,7 +2,9 @@ import { createApp } from 'vue';
 import axios from 'axios';
 
 import 'bootstrap';
+import 'flatpickr/dist/flatpickr.min.css'; // import before tabler
 import '@tabler/core/dist/css/tabler.min.css';
+import '@tabler/core/dist/css/tabler-vendors.min.css';
 import 'feather-icons/dist/feather.min.js';
 
 import App from '@/App.vue';

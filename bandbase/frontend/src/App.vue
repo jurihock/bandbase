@@ -11,4 +11,8 @@ export default {
 </script>
 
 <style>
+/* fix flatpickr font size, which is a bit too large */
+.flatpickr-current-month {
+  font-size: 123%; /* instead of 135% */
+}
 </style>
