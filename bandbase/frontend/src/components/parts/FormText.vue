@@ -1,16 +1,16 @@
 <template>
   <label class="col-form-label"
-         v-bind:class="[ widths[0], isrequired ? 'required' : '' ]"
+         v-bind:class="[ widths[0], required ? 'required' : '' ]"
          v-bind:for="id">
     {{ label }}
   </label>
   <div v-bind:class="widths[1]">
     <input class="form-control"
            v-bind:autocomplete="autocomplete"
-           v-bind:class="isrequired ? 'required' : ''"
+           v-bind:class="required ? 'required' : ''"
            v-bind:id="id"
            v-bind:placeholder="placeholder"
-           v-bind:required="isrequired"
+           v-bind:required="required"
            v-bind:type="type"
            v-model="value">
     <div v-if="help" v-html="help" class="form-text"></div>
@@ -26,7 +26,6 @@ export default {
   data: function() {
     return {
       id: 'uuid:' + uuid(),
-      isrequired: this.required === 'true',
       widths: this.layout.split(',').map(width => 'col-sm-' + width)
     }
   },
@@ -57,9 +56,9 @@ export default {
       default: null
     },
     required: {
-      type: String,
+      type: Boolean,
       required: false,
-      default: 'false'
+      default: false
     },
     type: {
       type: String,
