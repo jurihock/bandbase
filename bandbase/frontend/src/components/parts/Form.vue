@@ -45,6 +45,9 @@ export default {
 </script>
 
 <style scoped>
+/deep/ .col-form-label {
+  text-align: right;
+}
 /deep/ .form-label.required:after,
 /deep/ .col-form-label.required:after {
   content: "*";
