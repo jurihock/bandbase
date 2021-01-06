@@ -52,8 +52,11 @@ export default {
 </script>
 
 <style scoped>
-/deep/ .col-form-label {
-  text-align: right;
+/* https://github.com/twbs/bootstrap/issues/20643 */
+@media (min-width: 576px) {
+  /deep/ .col-form-label {
+    text-align: right;
+  }
 }
 /deep/ .form-label.required:after,
 /deep/ .col-form-label.required:after {
@@ -62,6 +65,6 @@ export default {
   color: #d63939;
 }
 /deep/ .form-control.required {
-  border-color: #d63939;
+  /* border-color: #d63939; */
 }
 </style>
