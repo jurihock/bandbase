@@ -30,6 +30,7 @@
              v-bind:required="required"
              v-bind:type="type"
              v-model="value.longitude">
+      <button type="button" class="btn btn-light">Karte</button>
     </div>
     <div v-if="help" v-html="help" class="form-text"></div>
   </div>
