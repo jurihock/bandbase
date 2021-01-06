@@ -10,7 +10,7 @@
       </li>
     </ul>
     <div class="card-body">
-      <form>
+      <form v-bind:autocomplete="autocomplete">
         <div v-bind:class="tabs.length ? 'tab-content' : ''">
           <slot/>
         </div>
@@ -27,6 +27,13 @@ export default {
     return {
       tabs: [],
       selected: null
+    }
+  },
+  props: {
+    autocomplete: {
+      type: String,
+      required: false,
+      default: 'off'
     }
   },
   mounted: function() {

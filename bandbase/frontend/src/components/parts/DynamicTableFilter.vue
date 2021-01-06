@@ -1,5 +1,6 @@
 <template>
-  <input type="text"
+  <input autocomplete="off"
+         type="text"
          class="filter"
          ref="filter"
          v-model="value"
