@@ -23,6 +23,7 @@ class App(FastAPI):
                          debug=bandbase.defaults.debug)
 
         self.include_router(bandbase.routers.common)
+        self.include_router(bandbase.routers.list)
         self.include_router(bandbase.routers.session)
         self.include_router(bandbase.routers.table)
 

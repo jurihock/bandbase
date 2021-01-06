@@ -114,6 +114,12 @@ class SecondaryTable(AbstractTable):
     def __int__(self): return self.ID
     def __str__(self): return self.Name
 
+    @sql_hybrid_property
+    def IsPersistent(self): return self.ID < 1000
+
+    @sql_hybrid_property
+    def IsRelated(self): return False
+
 
 class StaticSecondaryTable(AbstractTable):
 
