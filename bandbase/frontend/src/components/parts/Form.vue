@@ -1,22 +1,34 @@
 <template>
-  <div class="card">
-    <ul v-if="tabs.length" class="nav nav-tabs nav-tabs-alt">
-      <li v-for="(tab, index) in tabs" class="nav-item">
-        <a class="nav-link"
-           v-bind:class="(index == selected) ? 'active' : ''"
-           v-on:click="select(index)">
-          {{ tab.title }}
-        </a>
-      </li>
-    </ul>
-    <div class="card-body">
-      <form v-bind:autocomplete="autocomplete">
+  <form v-bind:autocomplete="autocomplete"
+        v-on:submit.prevent="$emit('post')">
+    <div class="card">
+      <ul v-if="tabs.length" class="nav nav-tabs nav-tabs-alt">
+        <li v-for="(tab, index) in tabs" class="nav-item">
+          <a class="nav-link"
+             v-bind:class="(index == selected) ? 'active' : ''"
+             v-on:click="select(index)">
+            {{ tab.title }}
+          </a>
+        </li>
+      </ul>
+      <div class="card-body">
         <div v-bind:class="tabs.length ? 'tab-content' : ''">
           <slot/>
         </div>
-      </form>
+      </div>
+      <div v-if="actions" class="card-footer text-end">
+        <div class="d-flex">
+          <button v-if="~actions.indexOf('delete')"
+                  v-on:click="$emit('delete')"
+                  class="btn btn-outline-danger"
+                  type="button">Löschen...</button>
+          <button v-if="~actions.indexOf('post')"
+                  class="btn btn-primary ms-auto"
+                  type="submit">Fertigstellen</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -30,6 +42,11 @@ export default {
     }
   },
   props: {
+    actions: {
+      type: String,
+      required: false,
+      default: ''
+    },
     autocomplete: {
       type: String,
       required: false,
