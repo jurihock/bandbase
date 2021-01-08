@@ -7,7 +7,7 @@
 <script>
 function LayoutData(value) {
   var values = value.split(',');
-  console.assert([1, 2].indexOf(values.length) >= 0);
+  console.assert(~[1, 2].indexOf(values.length));
   if (values.length < 2) values.unshift(0);
   this.offset = values[0] ? 'offset-sm-' + values[0] : '';
   this.width = values[1] ? 'col-sm-' + values[1] : '';
