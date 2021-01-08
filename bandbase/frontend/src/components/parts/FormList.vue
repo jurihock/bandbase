@@ -11,7 +11,8 @@
             v-bind:disabled="pending || error"
             v-bind:id="id"
             v-bind:required="required"
-            v-model="value">
+            v-bind:value="value"
+            v-on:input="$emit('update:value', $event.target.value)">
       <option v-for="item in list.items"
               v-bind:value="item.id">
         {{ item.name }}

@@ -13,7 +13,8 @@
            v-bind:placeholder="placeholder"
            v-bind:required="required"
            v-bind:type="type"
-           v-model="value">
+           v-bind:value="value"
+           v-on:input="$emit('update:value', $event.target.value)">
     <div v-if="help" v-html="help" class="form-text"></div>
   </div>
 </template>

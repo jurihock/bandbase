@@ -17,7 +17,8 @@
              v-bind:placeholder="placeholder"
              v-bind:required="required"
              v-bind:type="type"
-             v-model="value.latitude">
+             v-bind:value="value.latitude"
+             v-on:input="$emit('update:value', { latitude: $event.target.value, longitude: value.longitude })">
       <label class="input-group-text"
              v-bind:for="id + ':longitude'">
         <span title="Längengrad">L</span>
@@ -29,7 +30,8 @@
              v-bind:placeholder="placeholder"
              v-bind:required="required"
              v-bind:type="type"
-             v-model="value.longitude">
+             v-bind:value="value.longitude"
+             v-on:input="$emit('update:value', { latitude: value.latitude, longitude: $event.target.value })">
       <button type="button" class="btn btn-light">Karte</button>
     </div>
     <div v-if="help" v-html="help" class="form-text"></div>

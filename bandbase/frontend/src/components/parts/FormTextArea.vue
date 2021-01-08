@@ -14,7 +14,8 @@
               v-bind:rows="rows"
               v-bind:style="color ? 'background-color:' + color : ''"
               v-bind:wrap="wrap ? 'soft' : 'off'"
-              v-model="value"></textarea>
+              v-bind:value="value"
+              v-on:input="$emit('update:value', $event.target.value)"></textarea>
     <div v-if="help" v-html="help" class="form-text"></div>
   </div>
 </template>
