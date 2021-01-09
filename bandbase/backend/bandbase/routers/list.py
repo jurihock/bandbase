@@ -41,7 +41,7 @@ def contact_category():
             'items': [
                 {'id': category.ID,
                  'name': category.Name,
-                 'pinned': category.IsPersistent or category.IsRelated}
+                 'pinned': category.IsPersistent or category.IsReferenced}
                 for category in categories
             ]
         }

@@ -103,7 +103,7 @@ class PrimaryTable(AbstractTable):
     def IsPersistent(self): return self.ID < 1000
 
     @sql_hybrid_property
-    def IsRelated(self): return False
+    def IsReferenced(self): return False
 
 
 class SecondaryTable(AbstractTable):
@@ -118,7 +118,7 @@ class SecondaryTable(AbstractTable):
     def IsPersistent(self): return self.ID < 1000
 
     @sql_hybrid_property
-    def IsRelated(self): return False
+    def IsReferenced(self): return False
 
 
 class StaticSecondaryTable(AbstractTable):

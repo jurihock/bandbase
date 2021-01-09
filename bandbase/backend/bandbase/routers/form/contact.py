@@ -258,7 +258,7 @@ def delete(id: int, logger: bandbase.core.common.Logger = Depends(bandbase.core.
                 raise HTTPException(status_code=STATUS.HTTP_400_BAD_REQUEST,
                                     detail=f'Unable to delete contact {id} "{name}", it\'s marked as persistent!')
 
-            if contact.IsRelated:
+            if contact.IsReferenced:
                 raise HTTPException(status_code=STATUS.HTTP_400_BAD_REQUEST,
                                     detail=f'Unable to delete contact {id} "{name}", it\'s still referenced!')
 
