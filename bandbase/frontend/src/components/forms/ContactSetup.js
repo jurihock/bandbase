@@ -15,7 +15,7 @@ function setup() {
   const router = useRouter();
 
   const id = _get(route, 'params.id', null);
-  const data = reactive(ContactData);
+  const data = reactive(ContactData());
 
   function copy(src, dst) {
     dst.name.first = parse.string(src.name.first);
