@@ -21,7 +21,7 @@
       <!--<span class="nav-link-title"></span>-->
 
       <!--
-      TODO
+      TODO ISSUE #19
       https://github.com/vuejs/vue-router-next/issues/148
       <router-link :to="{ name: 'AboutPage'}" v-slot="{ href, route, navigate, isActive, isExactActive }">
         <li :class="[isActive && 'active']" class="nav-item">
