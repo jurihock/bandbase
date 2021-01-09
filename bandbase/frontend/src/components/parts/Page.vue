@@ -28,6 +28,10 @@
 </template>
 
 <script>
+import _get from 'lodash/get';
+
+import toaster from '@/toaster.js';
+
 import PageHeader from '@/components/parts/PageHeader.vue';
 import PageFooter from '@/components/parts/PageFooter.vue';
 import Toaster from '@/components/parts/Toaster.vue';
@@ -35,7 +39,16 @@ import Toaster from '@/components/parts/Toaster.vue';
 export default {
   name: 'Page',
   components: { PageHeader, PageFooter, Toaster },
-  props: {}
+  props: {},
+  mounted: function() {
+    if ('toasts' in this.$route.params) {
+      const toasts = JSON.parse(this.$route.params.toasts);
+      for (var i = 0; i < toasts.length; i++) {
+        const toast = toasts[i];
+        toaster.subject(toast.subject, toast.message);
+      }
+    }
+  }
 }
 </script>
 
