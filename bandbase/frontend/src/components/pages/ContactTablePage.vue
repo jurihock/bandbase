@@ -1,6 +1,12 @@
 <template>
   <Page>
     <template v-slot:title>Kontakte</template>
+    <template v-slot:floor>
+      <div class="btn-list">
+        <router-link v-bind:to="{ name: 'AddContactPage'}" class="btn btn-primary">Neuer Kontakt anlegen...</router-link>
+        <router-link v-bind:to="{ name: 'AddContactPage'}" class="btn btn-primary">Bandmusiker</router-link>
+      </div>
+    </template>
     <template v-slot:content>
       <DynamicTable source="contacts"
                     v-bind:columns="{

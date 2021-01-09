@@ -5,7 +5,7 @@
   </div>
   <div v-show="!pending && !error" class="card">
     <div class="table-responsive my-0">
-      <table class="table table-hover table-vcenter not-table-sm card-table">
+      <table class="table table-sm table-hover table-vcenter card-table">
         <colgroup>
           <col v-for="column in table.columns"
                v-bind:width="get_column_width_percent(columns[column.name].width)"/>
@@ -37,7 +37,16 @@
               </span>
               {{ row.values[column.name] }}
             </td>
-            <td>...</td>
+            <td>
+              <div class="d-grid">
+                <router-link class="btn btn-white"
+                             v-if="source == 'contacts'"
+                             v-bind:title="'Kontakt „' + row.values.name + '“ bearbeiten'"
+                             v-bind:to="{ name: 'EditContactPage', params: {id: row.id}}">...</router-link>
+                <!-- TODO ISSUE #4 -->
+                <!-- TODO ISSUE #9 -->
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -1,6 +1,13 @@
 <template>
   <Page>
     <template v-slot:title>Kontakt bearbeiten</template>
+    <template v-slot:floor>
+      <div class="btn-list">
+        <router-link v-bind:to="{ name: 'AddContactPage'}" class="btn btn-white">
+          Visitenkarte herunterladen
+        </router-link>
+      </div>
+    </template>
     <template v-slot:content>
       <ContactForm actions="post,delete"
                    v-on:post="update"

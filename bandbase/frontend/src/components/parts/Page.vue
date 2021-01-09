@@ -11,7 +11,7 @@
               </h2>
             </div>
             <div class="col-auto ms-auto d-print-none">
-              <slot name="extra"/>
+              <slot name="floor"/>
             </div>
           </div>
         </div>
