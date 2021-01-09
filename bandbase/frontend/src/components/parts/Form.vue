@@ -71,17 +71,17 @@ export default {
 <style scoped>
 /* https://github.com/twbs/bootstrap/issues/20643 */
 @media (min-width: 576px) {
-  /deep/ .col-form-label {
+  :deep() .col-form-label {
     text-align: right;
   }
 }
-/deep/ .form-label.required:after,
-/deep/ .col-form-label.required:after {
+:deep() .form-label.required:after,
+:deep() .col-form-label.required:after {
   content: "*";
   margin-left: .25rem;
   color: #d63939;
 }
-/deep/ .form-control.required {
+:deep() .form-control.required {
   /* border-color: #d63939; */
 }
 </style>
