@@ -89,6 +89,9 @@ function setup() {
   }
 
   function delet() {
+    if (!confirm('Soll dieser Datensatz unwiderruflich gelöscht werden?')) {
+      return;
+    }
     console.assert(id);
     const url = config.backend + '/form/contact/delete/' + id;
     axios.post(url)
