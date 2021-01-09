@@ -4,22 +4,22 @@
       Dashboard
     </template>
     <template v-slot:content>
-      <Tabster>
+      <Tabs>
         <Tab title="foo">FOO</Tab>
         <Tab title="bar">BAR</Tab>
-      </Tabster>
+      </Tabs>
     </template>
   </Page>
 </template>
 
 <script>
 import Page from '@/components/parts/Page.vue';
-import Tabster from '@/components/parts/Tabster.vue';
+import Tabs from '@/components/parts/Tabs.vue';
 import Tab from '@/components/parts/Tab.vue';
 
 export default {
   name: 'DashboardPage',
-  components: { Page, Tabster, Tab },
+  components: { Page, Tabs, Tab },
   data: function() {
     return {}
   },

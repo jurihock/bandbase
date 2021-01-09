@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'Tabster',
+  name: 'Tabs',
   components: {},
   data: function() {
     return {
