@@ -20,8 +20,8 @@ export default {
       html: null,
       class: null,
       background: {
-        native: null,
-        patched: null,
+        transparent: null,
+        opaque: null,
         current: null
       }
     }
@@ -31,16 +31,21 @@ export default {
     subject: String,
     message: String
   },
+  created: function() {
+    // the toast class needs to be set early,
+    // to determine the proper background color
+    // from computed style in the mount section
+    this.class = this.get_toast_class();
+  },
   mounted: function() {
     this.html = this.get_toast_html();
-    this.class = this.get_toast_class();
     this.background = this.get_toast_background();
     this.$emit('open', this.id);
   },
   methods: {
     parse_rgba_color: function(value) {
       var rgba = value.split('(')[1].split(')')[0].split(',');
-      if (rgba.length < 4) rgba.put('1');
+      if (rgba.length < 4) rgba.push('1');
       rgba[0] = parseInt(rgba[0]);
       rgba[1] = parseInt(rgba[1]);
       rgba[2] = parseInt(rgba[2]);
@@ -52,46 +57,48 @@ export default {
     },
     get_toast_background: function() {
       var background = {
-        native: null,
-        patched: null,
+        transparent: null,
+        opaque: null,
         current: null
       };
       try {
         var native = this.parse_rgba_color(window
           .getComputedStyle(this.$refs.toast)
           .getPropertyValue('background-color'));
-        var patched = [...native];
-        patched[patched.length - 1] = 1;
-        background.native = this.build_rgba_color(native);
-        background.patched = this.build_rgba_color(patched);
-        background.current = background.native;
+        var transparent = [...native];
+        var opaque = [...native];
+        transparent[transparent.length - 1] = 0.85;
+        opaque[opaque.length - 1] = 1;
+        background.transparent = this.build_rgba_color(transparent);
+        background.opaque = this.build_rgba_color(opaque);
+        background.current = background.transparent;
       }
       catch (error) {
-        background.native = null;
-        background.patched = null;
+        background.transparent = null;
+        background.opaque = null;
         background.current = null;
-        console.error('Unable to identify the native toast background color!', error);
+        console.error('Unable to identify the toast background color!', error);
       }
       return background;
     },
     get_toast_class: function() {
       if (this.subject == 'error')
-        return 'alert alert-danger';
+        return 'alert alert-important alert-danger';
       if (this.subject == 'warning')
-        return 'alert alert-warning';
+        return 'alert alert-important alert-warning';
       if (this.subject == 'success')
-        return 'alert alert-success';
-      return 'alert alert-info';
+        return 'alert alert-important alert-success';
+      return 'alert alert-important alert-info';
     },
     get_toast_html: function() {
       return this.message.replaceAll('<a ', '<a class="alert-link" ');
     },
     on_mouse_enter: function() {
-      this.background.current = this.background.patched;
+      this.background.current = this.background.opaque;
       this.$emit('pause', this.id);
     },
     on_mouse_leave: function() {
-      this.background.current = this.background.native;
+      this.background.current = this.background.transparent;
       this.$emit('resume', this.id);
     },
     on_mouse_click: function() {
@@ -104,5 +111,10 @@ export default {
 <style scoped>
 .toast {
   cursor: pointer;
+}
+:deep() a.alert-link {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: underline;
 }
 </style>
