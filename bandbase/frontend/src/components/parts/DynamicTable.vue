@@ -52,11 +52,14 @@
 </template>
 
 <script>
-import DynamicTableFilter from '@/components/parts/DynamicTableFilter.vue';
-import DynamicTablePager from '@/components/parts/DynamicTablePager.vue';
-import config from '@/config.js';
 import axios from 'axios';
 import _debounce from 'lodash/debounce';
+import _get from 'lodash/get';
+
+import config from '@/config.js';
+
+import DynamicTableFilter from '@/components/parts/DynamicTableFilter.vue';
+import DynamicTablePager from '@/components/parts/DynamicTablePager.vue';
 
 export default {
   name: 'DynamicTable',
@@ -116,7 +119,7 @@ export default {
     on_probe_error: function(error) {
       this.table.rows = [];
       this.table.total = 0;
-      this.error = error.toString();
+      this.error = _get(error, 'response.data.detail', error.message);
       console.error(error);
     },
     on_update_callback: function(response) {
@@ -127,7 +130,7 @@ export default {
     on_update_error: function(error) {
       this.table.rows = [];
       this.table.total = 0;
-      this.error = error.toString();
+      this.error = _get(error, 'response.data.detail', error.message);
       console.error(error);
     },
     probe: function() {

@@ -27,9 +27,11 @@
 </template>
 
 <script>
-import config from '@/config.js';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
+import _get from 'lodash/get';
+
+import config from '@/config.js';
 
 export default {
   name: 'FormList',
@@ -102,7 +104,7 @@ export default {
       this.list.items = [];
       this.list.default = null;
       this.list.nullable = null;
-      this.error = error.toString();
+      this.error = _get(error, 'response.data.detail', error.message);
       console.error(error);
     },
     update: function () {
