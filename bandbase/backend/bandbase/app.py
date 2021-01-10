@@ -23,6 +23,7 @@ class App(FastAPI):
                          debug=bandbase.defaults.debug)
 
         self.include_router(bandbase.routers.common)
+        self.include_router(bandbase.routers.file)
         self.include_router(bandbase.routers.form)
         self.include_router(bandbase.routers.list)
         self.include_router(bandbase.routers.session)
@@ -38,12 +39,17 @@ class App(FastAPI):
             'http://localhost:8080',
         ]
 
+        # additionally to the safelisted response headers
+        # like Content-Length and Content-Type
+        headers = ['Content-Disposition']
+
         self.add_middleware(
             CORSMiddleware,
             allow_origins=origins,
             allow_credentials=True,
             allow_methods=['*'],
-            allow_headers=['*'])
+            allow_headers=['*'],
+            expose_headers=headers)
 
 
 app = App()
