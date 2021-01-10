@@ -3,9 +3,10 @@
     <template v-slot:title>Kontakt bearbeiten</template>
     <template v-slot:floor>
       <div class="btn-list">
-        <router-link v-bind:to="{ name: 'AddContactPage'}" class="btn btn-white">
-          Visitenkarte herunterladen
-        </router-link>
+        <Download class="btn btn-white"
+                  v-bind:files="[`contact/${id}.vcf`]">
+          Dateien
+        </Download>
       </div>
     </template>
     <template v-slot:content>
@@ -20,11 +21,12 @@
 <script>
 import ContactSetup from '@/components/forms/ContactSetup.js';
 import ContactForm from '@/components/forms/ContactForm.vue';
+import Download from '@/components/parts/Download.vue';
 import Page from '@/components/parts/Page.vue';
 
 export default {
   name: 'EditContactPage',
-  components: { Page, ContactForm },
+  components: { ContactForm, Download, Page },
   props: {},
   setup: ContactSetup,
   mounted: function() {

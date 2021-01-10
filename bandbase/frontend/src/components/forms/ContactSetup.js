@@ -108,6 +108,7 @@ function setup() {
   }
 
   return {
+    id,
     data,
     create,
     read,
