@@ -133,7 +133,7 @@ def read(id: int, logger: bandbase.core.common.Logger = Depends(bandbase.core.co
 
             if not contact:
 
-                raise HTTPException(status_code=STATUS.HTTP_400_BAD_REQUEST,
+                raise HTTPException(status_code=STATUS.HTTP_404_NOT_FOUND,
                                     detail=f'Unable to read contact {id}, it doesn\'t exist!')
 
             return {
@@ -188,7 +188,7 @@ def update(id: int, data: ContactData, logger: bandbase.core.common.Logger = Dep
 
             if not contact:
 
-                raise HTTPException(status_code=STATUS.HTTP_400_BAD_REQUEST,
+                raise HTTPException(status_code=STATUS.HTTP_404_NOT_FOUND,
                                     detail=f'Unable to update contact {id}, it doesn\'t exist!')
 
             contact.FirstName = data.name.first
@@ -249,7 +249,7 @@ def delete(id: int, logger: bandbase.core.common.Logger = Depends(bandbase.core.
 
             if not contact:
 
-                raise HTTPException(status_code=STATUS.HTTP_400_BAD_REQUEST,
+                raise HTTPException(status_code=STATUS.HTTP_404_NOT_FOUND,
                                     detail=f'Unable to delete contact {id}, it doesn\'t exist!')
 
             name = str(contact)
