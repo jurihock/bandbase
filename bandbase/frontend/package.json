@@ -8,10 +8,10 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@popperjs/core": "^2.6.0",
-    "@tabler/core": "^1.0.0-alpha.21",
+    "@popperjs/core": "^2.9.2",
+    "@tabler/core": "^1.0.0-beta2",
     "axios": "^0.21.1",
-    "bootstrap": "^5.0.0-beta1",
+    "bootstrap": "^5.0.1",
     "feather-icons": "^4.28.0",
     "flatpickr": "^4.6.9",
     "lodash": "^4.17.21",
@@ -21,7 +21,7 @@
     "vue-router": "^4.0.2"
   },
   "devDependencies": {
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0"
+    "@vue/cli-service": "~4.5.13",
+    "@vue/compiler-sfc": "^3.1.1"
   }
 }
