@@ -14,7 +14,7 @@
     "bootstrap": "^5.0.0-beta1",
     "feather-icons": "^4.28.0",
     "flatpickr": "^4.6.9",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "mitt": "^2.1.0",
     "uuid": "^8.3.2",
     "vue": "^3.0.4",
