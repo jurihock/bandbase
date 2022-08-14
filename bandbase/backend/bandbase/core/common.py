@@ -18,7 +18,13 @@ class Config(BaseSettings):
 
     def __init__(self, file=bandbase.defaults.config):
 
-        click.secho('Bootstrapping config file {}'.format(file))
+        if file:
+
+            click.secho(f'Init custom configs from {file}')
+
+        else:
+
+            click.secho('Init default configs')
 
         super().__init__(_env_file=file)
 
@@ -49,7 +55,7 @@ class Logger(LoggerAdapter):
 
         super().__init__(logger=logging.getLogger('bandbase'), extra={})
 
-        click.secho('Bootstrapping log files in {}'.format(directory))
+        click.secho(f'Init logs in {directory}')
 
         MB = 1024 * 1024
 

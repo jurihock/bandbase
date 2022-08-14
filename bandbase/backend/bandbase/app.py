@@ -14,20 +14,20 @@ class App(FastAPI):
 
     def __init__(self):
 
-        click.secho('Bootstrapping the application instance {}'.format('[DEBUG]' if bandbase.defaults.debug else ''))
+        click.secho(f'Init bandbase {"[DEBUG]" if bandbase.defaults.debug else ""}')
 
         super().__init__(title=bandbase.imprint.name,
                          version=bandbase.imprint.version,
+                         debug=bandbase.defaults.debug,
                          docs_url='/docs' if bandbase.defaults.debug else None,
-                         redoc_url='/redoc' if bandbase.defaults.debug else None,
-                         debug=bandbase.defaults.debug)
+                         redoc_url='/redoc' if bandbase.defaults.debug else None)
 
         self.include_router(bandbase.routers.common)
-        self.include_router(bandbase.routers.file)
-        self.include_router(bandbase.routers.form)
-        self.include_router(bandbase.routers.list)
+        # self.include_router(bandbase.routers.files)
+        self.include_router(bandbase.routers.forms)
+        self.include_router(bandbase.routers.lists)
         self.include_router(bandbase.routers.session)
-        self.include_router(bandbase.routers.table)
+        self.include_router(bandbase.routers.tables)
 
         # seel also
         # https://fastapi.tiangolo.com/tutorial/cors

@@ -7,7 +7,7 @@ import bandbase.core.common
 import bandbase.core.database
 import bandbase.core.security
 
-from bandbase.core.database import *
+from bandbase.schemas.database import *
 
 router = APIRouter()
 

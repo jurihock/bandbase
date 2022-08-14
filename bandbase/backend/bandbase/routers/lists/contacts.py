@@ -1,29 +1,15 @@
-from datetime import datetime
 from fastapi import APIRouter, Depends, Request, Response, HTTPException
-from pydantic import BaseModel
-from typing import Optional, Dict, List
 
 import bandbase.core.common
 import bandbase.core.database
 import bandbase.core.security
 import bandbase.utils.sql as SQL
 
-from bandbase.core.database import *
-
-router = APIRouter(prefix='/list', tags=['list'])
-
-
-class ListItem(BaseModel):
-    id: int
-    name: str
-    pinned: bool
+from bandbase.schemas.database import *
+from bandbase.schemas.lists import *
 
 
-class List(BaseModel):
-    items: List[ListItem]
-    default: Optional[int]
-    nullable: bool
-
+router = APIRouter(prefix='', tags=['lists', 'contacts'])
 
 @router.post('/contact/category', dependencies=[Depends(bandbase.core.security.ssl), Depends(bandbase.core.security.auth)],
                                   response_model=List)

@@ -1,25 +1,16 @@
-from datetime import datetime
-from fastapi import status as STATUS
 from fastapi import APIRouter, Depends, Request, Response, HTTPException
-from pydantic import BaseModel
-from typing import Optional, Dict, List, Union
+from fastapi import status as STATUS
 
 import bandbase.core.common
 import bandbase.core.database
 import bandbase.core.security
 import bandbase.utils.sql as SQL
 
-from bandbase.core.database import *
+from bandbase.schemas.database import *
+from bandbase.schemas.files import *
 
-router = APIRouter(prefix='/contact', tags=['file'])
 
-
-class VcfResponse(Response):
-    def __init__(self, content: str, filename: str):
-        super().__init__(
-            content=content,
-            headers={'Content-Disposition': f'attachment;filename="{filename}.vcf"'},
-            media_type='text/vcard')
+router = APIRouter(prefix='/contact', tags=['files', 'contacts'])
 
 
 @router.get('/{id}.vcf', dependencies=[Depends(bandbase.core.security.ssl), Depends(bandbase.core.security.auth)],
