@@ -6,22 +6,23 @@ import sqlalchemy.orm
 
 
 @functools.lru_cache()
-def get_session_factory():
+def get_session_maker():
 
     url = 'postgresql://postgres@localhost:5432/bandbase'
 
     engine = sqlalchemy.create_engine(url)
-    sessionmaker = sqlalchemy.orm.sessionmaker()
-    sessionmaker.configure(bind=engine)
 
-    return sessionmaker
+    maker = sqlalchemy.orm.sessionmaker()
+    maker.configure(bind=engine)
+
+    return maker
 
 
 @contextlib.contextmanager
 def session():
 
-    factory = get_session_factory()
-    session = factory()
+    maker = get_session_maker()
+    session = maker()
 
     try:
         yield session

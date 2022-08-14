@@ -60,7 +60,7 @@ app = App()
 @app.on_event('startup')
 def on_startup_event():
 
-    print('STARTUP')
+    click.secho('STARTUP')
 
     bandbase.core.common.logger().info('test info')
     bandbase.core.common.logger().warning('test warning')
@@ -73,12 +73,15 @@ def on_startup_event():
 @app.on_event('shutdown')
 def on_shutdown_event():
 
-    print('SHUTDOWN')
+    click.secho('SHUTDOWN')
 
 
 @app.exception_handler(bandbase.core.session.SessionException)
 async def on_session_exception(request: Request, exception: bandbase.core.session.SessionException):
-    print(f'Deleting cookie "{exception.cookie}" due to session exception {exception.status_code}!')
+
+    click.secho(f'Deleting cookie "{exception.cookie}" due to session exception {exception.status_code}!')
+
     response = await http_exception_handler(request, exception)
     response.delete_cookie(exception.cookie)
+
     return response
