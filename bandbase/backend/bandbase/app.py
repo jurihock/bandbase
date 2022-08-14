@@ -23,7 +23,7 @@ class App(FastAPI):
                          redoc_url='/redoc' if bandbase.defaults.debug else None)
 
         self.include_router(bandbase.routers.common)
-        # self.include_router(bandbase.routers.files)
+        self.include_router(bandbase.routers.files)
         self.include_router(bandbase.routers.forms)
         self.include_router(bandbase.routers.lists)
         self.include_router(bandbase.routers.session)
