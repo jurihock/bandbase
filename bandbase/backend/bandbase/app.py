@@ -7,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import bandbase.defaults
 import bandbase.imprint
 import bandbase.routers
+
+import bandbase.core.database
 import bandbase.core.session
 
 
@@ -64,6 +66,8 @@ def on_startup_event():
     bandbase.core.common.logger().warning('test warning')
     bandbase.core.common.logger().error('test error')
     bandbase.core.common.logger().critical('test critical')
+
+    bandbase.core.database.bootstrap()
 
 
 @app.on_event('shutdown')
